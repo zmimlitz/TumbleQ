@@ -17,9 +17,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>jgoodies</groupId>
-            <artifactId>forms</artifactId>
-            <version>1.0.5</version>
+            <groupId>com.miglayout</groupId>
+            <artifactId>miglayout</artifactId>
+            <version>3.7.3.1</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
@@ -38,7 +38,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.mimlitz.tumbleQ.Application</mainClass>
+                            <mainClass>com.mimlitz.tumbleQ.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

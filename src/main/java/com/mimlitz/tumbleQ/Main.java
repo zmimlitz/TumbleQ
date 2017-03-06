@@ -3,26 +3,16 @@ package com.mimlitz.tumbleQ;
 import com.mimlitz.tumbleQ.gui.Form;
 import com.mimlitz.tumbleQ.util.io.MyFileFilter;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
 import javax.swing.JFileChooser;
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.CancellationException;
 
-public class Application {
+public class Main extends Application {
 
     public static void main(String[] args){
-        Form gui = Form.getInstance();
-        Application app = new Application(gui);
-        try {
-            File open = openFile();
-            if (!open.exists()){
-                throw new CancellationException("Not a real file");
-            }
-            app.load(open);
-        }
-        catch (CancellationException e){
-            app.init();
-        }
+        launch(args);
     }
 
     private static File openFile() throws CancellationException {
@@ -40,17 +30,29 @@ public class Application {
 
     private final Form GUI;
 
-    private Application(Form gui){
-        this.GUI = gui;
+    public Main(){
+        this.GUI = Form.getInstance();
+        try {
+            File open = openFile();
+            if (!open.exists()){
+                throw new CancellationException("Not a real file");
+            }
+        }
+        catch (CancellationException e){}
     }
 
     void load(File file){
 
-        init();
     }
 
-    void init(){
+    @Override
+    public void init(){
 
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        GUI.showForm();
     }
 
 }

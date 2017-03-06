@@ -13,6 +13,12 @@ public class MyFileFilter extends javax.swing.filechooser.FileFilter {
         if (f.isDirectory()){
             return true;
         }
+        if (f.getName().charAt(0) == '.'){
+            return false;
+        }
+        if (f.getName().indexOf('.') == -1){
+            return false;
+        }
         String suffix = f.getName().substring(f.getName().lastIndexOf('.'));
         return suffix.equalsIgnoreCase(".tmblQ");
     }
