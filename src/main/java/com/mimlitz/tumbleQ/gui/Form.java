@@ -23,6 +23,8 @@ public class Form extends JFrame {
 
     private static Optional<Form> instance = Optional.empty();
 
+    private JFileChooser chooser;
+
     public static Form getInstance(){
         if (!instance.isPresent()){
             instance = Optional.of(new Form());
@@ -86,6 +88,11 @@ public class Form extends JFrame {
         JPanel viewPnl = new JPanel();
         viewPnl.setBackground(Color.BLACK);
         content.add(viewPnl, "cell 0 2 3 1");
+
+        chooser = new JFileChooser();
+        chooser.setFileFilter(new SoundFilter());
+        chooser.setMultiSelectionEnabled(false);
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     }
 
     public void showForm(){
@@ -99,10 +106,6 @@ public class Form extends JFrame {
     }
 
     private File getCueFile() throws CancellationException {
-        JFileChooser chooser = new JFileChooser();
-        chooser.setFileFilter(new SoundFilter());
-        chooser.setMultiSelectionEnabled(false);
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
             return chooser.getSelectedFile();
         }

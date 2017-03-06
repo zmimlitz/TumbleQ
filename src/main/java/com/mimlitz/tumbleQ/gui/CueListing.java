@@ -6,6 +6,8 @@ import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
 
 import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +21,7 @@ public class CueListing extends JPanel {
 
     public CueListing(){
         setOpaque(false);
-        setLayout(new MigLayout("", "[grow,fill][fill,grow]", "grow,fill"));
+        setLayout(new MigLayout("", "0[fill,50]0[fill,grow]0", ""));
         cues = new ArrayList<>();
     }
 
@@ -29,35 +31,37 @@ public class CueListing extends JPanel {
     }
 
     private void updateView(){
-        this.removeAll();
-        for (int i = 0; i < cues.size(); i++){
-            Entry cue = cues.get(i);
-            List<JLabel> row = new ArrayList<>();
-            row.add(new JLabel(cue.active ? "\u23F5" : ""));
-            row.get(0).setHorizontalAlignment(SwingConstants.CENTER);
-            row.add(new JLabel(cue.name));
-            for (int j = 0; j < row.size(); j++){
-                if (!cue.valid){
-                    row.get(j).setBackground(Color.RED);
-                }
-                else {
-                    row.get(j).setBackground(Color.WHITE);
-                }
-                add(row.get(j), String.format("cell %d %d", j*2, i));
-            }
-            add(new Divider(), String.format("cell %d %d %d %d", 0, i*2+1, 4, 1));
+        removeAll();
+        for (Entry cue : cues){
+            JLabel act = new JLabel(cue.active ? "\u23F5" : "");
+            act.setForeground(cue.valid ? Color.WHITE : Color.RED);
+            act.setHorizontalAlignment(SwingConstants.CENTER);
+            act.setBackground(Color.BLUE);
+            act.setOpaque(cue.selected);
+            add(act);
+            JLabel name = new JLabel(cue.name);
+            name.setForeground(cue.valid ? Color.WHITE : Color.RED);
+            name.setBackground(Color.BLUE);
+            name.setOpaque(cue.selected);
+            add(name, "wrap");
+
+            add(new Divider(), "span");
         }
-        repaint();
+        remove(getComponent(getComponentCount()-1));
+        EventQueue.invokeLater(() -> {
+            revalidate();
+            repaint(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        });
     }
 
     private class Entry {
-        boolean active, link, valid;
+        boolean active, selected, valid;
         final String name;
         final MediaPlayer clip;
 
         Entry(File file){
             active = false;
-            link  = false;
+            selected  = false;
             name = file.getName().substring(0, file.getName().lastIndexOf('.'));
             Media media = null;
             try {
