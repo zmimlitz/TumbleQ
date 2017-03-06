@@ -1,5 +1,6 @@
-package com.mimlitz.tumbleQ.gui;
+package com.mimlitz.tumbleQ.sound;
 
+import com.mimlitz.tumbleQ.gui.Divider;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -7,7 +8,6 @@ import net.miginfocom.swing.MigLayout;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

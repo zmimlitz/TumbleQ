@@ -7,8 +7,8 @@ import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.CancellationException;
 
+import com.mimlitz.tumbleQ.sound.CueListing;
 import com.mimlitz.tumbleQ.util.io.SoundFilter;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -72,6 +72,8 @@ public class Form extends JFrame {
                 listing.addCue(file);
             } catch (CancellationException e) {}
         });
+        controls.setForeground(Color.WHITE);
+        controls.setFont(new Font(controls.getFont().getName(), Font.BOLD, 15));
         controls.setBorder(new LineBorder(Color.DARK_GRAY, 2));
         qListPnl.add(controls, BorderLayout.NORTH);
 

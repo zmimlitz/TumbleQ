@@ -8,10 +8,12 @@ import javax.swing.JPanel;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Composite;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -36,19 +38,67 @@ public class CueControls extends JPanel {
         setOpaque(false);
         actions = new TreeMap<>();
 
-        ActionLabel add = new ActionLabel(new ImageIcon(CueControls.class.getResource("/cues/Add.png")), "Add");
-        add.setForeground(Color.WHITE);
-        add.addActionListener((ActionEvent e) -> {
-                if (actions.containsKey("add")){
-                    actions.get("add").run();
-                }
-            }
-        );
+        ActionLabel add = new ActionLabel(getImage("/cues/Add.png"), "Add");
+        add.addActionListener(this::runAction);
         add(add);
+
+        ActionLabel remove = new ActionLabel(getImage("/cues/Remove.png"), "Remove");
+        remove.addActionListener(this::runAction);
+        add(remove);
+
+        add(new JLabel("   "));
+
+        ActionLabel up = new ActionLabel(getImage("/cues/Move_Up.png"), "Move Up");
+        up.addActionListener(this::runAction);
+        add(up);
+
+        ActionLabel down = new ActionLabel(getImage("/cues/Move_Down.png"), "Move Down");
+        down.addActionListener(this::runAction);
+        add(down);
+    }
+
+    @Override
+    public void setForeground(Color fore){
+        super.setForeground(fore);
+        for (Component comp : getComponents()){
+            comp.setForeground(fore);
+        }
+    }
+
+    @Override
+    public void setFont(Font font){
+        super.setFont(font);
+        for (Component comp : getComponents()){
+            comp.setFont(font);
+        }
     }
 
     public void setAddAction(Runnable action){
-        actions.put("add", action);
+        actions.put("Add", action);
+    }
+
+    public void setRemoveAction(Runnable action){
+        actions.put("Remove", action);
+    }
+
+    public void setMoveUpAction(Runnable action){
+        actions.put("Move Up", action);
+    }
+
+    public void setMoveDownAction(Runnable action){
+        actions.put("Move Down", action);
+    }
+
+
+
+    private ImageIcon getImage(String name){
+        return new ImageIcon(CueControls.class.getResource(name));
+    }
+
+    private void runAction(ActionEvent e){
+        if (actions.containsKey(e.getActionCommand())){
+            actions.get(e.getActionCommand()).run();
+        }
     }
 
 }
@@ -95,7 +145,7 @@ class ActionLabel extends JComponent {
 
     private void fireAction(){
         for (ActionListener listener : listeners){
-            listener.actionPerformed(new ActionEvent(this, 0, "action"));
+            listener.actionPerformed(new ActionEvent(this, 0, text));
         }
     }
 
