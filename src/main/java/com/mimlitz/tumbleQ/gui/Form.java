@@ -72,6 +72,9 @@ public class Form extends JFrame {
                 listing.addCue(file);
             } catch (CancellationException e) {}
         });
+        controls.setRemoveAction(listing::deleteSelected);
+        controls.setMoveUpAction(listing::moveUpSelected);
+        controls.setMoveDownAction(listing::moveDownSelected);
         controls.setForeground(Color.BLUE);
         controls.setFont(new Font(controls.getFont().getName(), Font.BOLD, 15));
         controls.setBorder(new LineBorder(Color.DARK_GRAY, 2));
@@ -85,6 +88,12 @@ public class Form extends JFrame {
         content.add(goPnl, "cell 2 2");
 
         GoControls goControls = new GoControls();
+        goControls.setBackAction(listing::rollback);
+        goControls.setNextAction(listing::advance);
+        goControls.setGoAction(() -> {
+            listing.getCurrent().play();
+            listing.advance();
+        });
         goControls.setForeground(Color.BLUE);
         goControls.setFont(new Font(goControls.getName(), Font.BOLD, 15));
         goPnl.add(goControls, BorderLayout.CENTER);

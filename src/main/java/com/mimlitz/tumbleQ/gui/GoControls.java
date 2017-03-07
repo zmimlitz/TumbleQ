@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +17,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 
@@ -25,7 +28,7 @@ public class GoControls extends JPanel {
     public GoControls(){
         actions = new TreeMap<>();
         setOpaque(false);
-        setLayout(new MigLayout("", "[grow][grow][grow][grow][grow][grow]", "[grow][grow][grow][grow][grow]"));
+        setLayout(new MigLayout("", "10[grow,fill][grow,fill][grow,fill][grow,fill]10", "10[grow,fill]10[grow,fill]10"));
         initialize();
     }
 
@@ -33,17 +36,17 @@ public class GoControls extends JPanel {
         BigButton go = new BigButton("GO", getImage("/controls/Play.png"));
         go.setIconLoc(BigButton.ICON_RIGHT);
         go.addActionListener(this::runAction);
-        add(go, "cell 2 1 2 1");
+        add(go, "cell 1 0 2 1");
 
         BigButton back = new BigButton("LAST", getImage("/controls/Rewind.png"));
         back.setIconLoc(BigButton.ICON_LEFT);
         back.addActionListener(this::runAction);
-        add(back, "cell 1 3 2 1");
+        add(back, "cell 0 1 2 1");
 
         BigButton next = new BigButton("NEXT", getImage("/controls/Fast Forward.png"));
         next.setIconLoc(BigButton.ICON_RIGHT);
         next.addActionListener(this::runAction);
-        add(next, "cell 3 3 2 1");
+        add(next, "cell 2 1 2 1");
     }
 
     public void setGoAction(Runnable action){
@@ -51,7 +54,7 @@ public class GoControls extends JPanel {
     }
 
     public void setBackAction(Runnable action){
-        actions.put("BACK", action);
+        actions.put("LAST", action);
     }
 
     public void setNextAction(Runnable action){
@@ -103,9 +106,16 @@ class BigButton extends JPanel {
         setIconLoc(ICON_RIGHT);
         setText(text);
         setIcon(image);
+        this.icon.setMaximumSize(new Dimension(this.text.getPreferredSize().height*2, this.text.getPreferredSize().height*2));
         setOpaque(false);
         setBorder(new LineBorder(getForeground(), 2));
         setCursor(new Cursor(Cursor.HAND_CURSOR));
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                fireAction();
+            }
+        });
     }
 
     @Override
@@ -147,6 +157,7 @@ class BigButton extends JPanel {
         removeAll();
         add(loc == ICON_LEFT ? icon : text, "cell 0 0");
         add(loc == ICON_LEFT ? text : icon, "cell 1 0");
+        text.setHorizontalAlignment(loc == ICON_LEFT ? SwingConstants.LEFT : SwingConstants.RIGHT);
         revalidate();
         repaint();
     }
