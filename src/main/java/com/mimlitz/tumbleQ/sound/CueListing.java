@@ -27,6 +27,9 @@ public class CueListing extends JPanel {
 
     public void addCue(File file){
         cues.add(new Entry(file));
+        if (cues.size() == 1){
+            cues.get(0).active = true;
+        }
         updateView();
     }
 

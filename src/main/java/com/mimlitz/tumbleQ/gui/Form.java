@@ -72,7 +72,7 @@ public class Form extends JFrame {
                 listing.addCue(file);
             } catch (CancellationException e) {}
         });
-        controls.setForeground(Color.WHITE);
+        controls.setForeground(Color.BLUE);
         controls.setFont(new Font(controls.getFont().getName(), Font.BOLD, 15));
         controls.setBorder(new LineBorder(Color.DARK_GRAY, 2));
         qListPnl.add(controls, BorderLayout.NORTH);
@@ -81,15 +81,21 @@ public class Form extends JFrame {
 
         JPanel goPnl = new JPanel();
         goPnl.setBackground(Color.BLACK);
-        content.add(goPnl, "cell 2 0");
+        goPnl.setLayout(new BorderLayout());
+        content.add(goPnl, "cell 2 2");
+
+        GoControls goControls = new GoControls();
+        goControls.setForeground(Color.BLUE);
+        goControls.setFont(new Font(goControls.getName(), Font.BOLD, 15));
+        goPnl.add(goControls, BorderLayout.CENTER);
 
         JPanel controlsPnl = new JPanel();
         controlsPnl.setBackground(Color.BLACK);
-        content.add(controlsPnl, "cell 2 1");
+        content.add(controlsPnl, "cell 2 0 1 2");
 
         JPanel viewPnl = new JPanel();
         viewPnl.setBackground(Color.BLACK);
-        content.add(viewPnl, "cell 0 2 3 1");
+        content.add(viewPnl, "cell 0 2 2 1");
 
         chooser = new JFileChooser();
         chooser.setFileFilter(new SoundFilter());

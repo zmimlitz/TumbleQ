@@ -33,26 +33,29 @@ public class CueControls extends JPanel {
 
     private Map<String, Runnable> actions;
 
-    public CueControls(){
+    public CueControls() {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setOpaque(false);
         actions = new TreeMap<>();
+        initialize();
+    }
 
-        ActionLabel add = new ActionLabel(getImage("/cues/Add.png"), "Add");
+    private void initialize(){
+        ActionLabel add = new ActionLabel(getImage("/controls/Add.png"), "Add");
         add.addActionListener(this::runAction);
         add(add);
 
-        ActionLabel remove = new ActionLabel(getImage("/cues/Remove.png"), "Remove");
+        ActionLabel remove = new ActionLabel(getImage("/controls/Remove.png"), "Remove");
         remove.addActionListener(this::runAction);
         add(remove);
 
         add(new JLabel("   "));
 
-        ActionLabel up = new ActionLabel(getImage("/cues/Move_Up.png"), "Move Up");
+        ActionLabel up = new ActionLabel(getImage("/controls/Up.png"), "Move Up");
         up.addActionListener(this::runAction);
         add(up);
 
-        ActionLabel down = new ActionLabel(getImage("/cues/Move_Down.png"), "Move Down");
+        ActionLabel down = new ActionLabel(getImage("/controls/Down.png"), "Move Down");
         down.addActionListener(this::runAction);
         add(down);
     }
@@ -88,8 +91,6 @@ public class CueControls extends JPanel {
     public void setMoveDownAction(Runnable action){
         actions.put("Move Down", action);
     }
-
-
 
     private ImageIcon getImage(String name){
         return new ImageIcon(CueControls.class.getResource(name));
@@ -174,8 +175,7 @@ class ActionLabel extends JComponent {
         try {
             BufferedImage bi = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
             Graphics2D g = bi.createGraphics();
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             Composite comp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1);
             g.setComposite(comp);
             g.drawImage(((ImageIcon) (image)).getImage(), 0, 0, width, height, null);
