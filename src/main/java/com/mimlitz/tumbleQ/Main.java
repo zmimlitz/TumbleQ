@@ -26,6 +26,7 @@ public class Main extends Application {
             if (!open.exists()){
                 throw new CancellationException("Not a real file");
             }
+            load(open);
         }
         catch (CancellationException e){}
     }
@@ -44,7 +45,7 @@ public class Main extends Application {
     }
 
     void load(File file){
-
+        GUI.load(file);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.mimlitz.tumbleQ.sound;
 
 import com.mimlitz.tumbleQ.gui.Divider;
+import com.mimlitz.tumbleQ.util.io.SaveFile;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -142,14 +143,33 @@ public class CueListing extends JPanel {
         });
     }
 
+    public SaveFile getSaveFile(){
+        SaveFile.Builder builder = SaveFile.builder();
+        for (Entry cue : cues){
+            builder.addEntry(cue.file, cue.link);
+        }
+        return builder.build();
+    }
+
+    public void cloneFromListing(CueListing other){
+        this.cues = other.cues;
+        active = -1;
+        selected = -1;
+        locked = false;
+        updateView();
+    }
+
     private class Entry {
         boolean active, selected, valid;
-        final String name;
+        final String name, link;
         final MediaPlayer clip;
+        final File file;
 
         Entry(File file){
+            this.file = file;
             active = false;
             selected  = false;
+            link = "None";
             name = file.getName().substring(0, file.getName().lastIndexOf('.'));
             Media media = null;
             try {

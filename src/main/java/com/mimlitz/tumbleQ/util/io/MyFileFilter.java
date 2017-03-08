@@ -5,7 +5,7 @@ import java.io.File;
 public class MyFileFilter extends javax.swing.filechooser.FileFilter {
 
     public static String getSuffix(){
-        return "tmblQ";
+        return ".tmblQ";
     }
 
     @Override

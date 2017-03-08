@@ -1,5 +1,6 @@
 package com.mimlitz.tumbleQ.gui;
 
+import java.awt.BorderLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -34,30 +35,44 @@ public class CueControls extends JPanel {
     private Map<String, Runnable> actions;
 
     public CueControls() {
-        setLayout(new FlowLayout(FlowLayout.LEFT));
+        setLayout(new BorderLayout());
         setOpaque(false);
         actions = new TreeMap<>();
         initialize();
     }
 
     private void initialize(){
+        JPanel leftHold = new JPanel();
+        leftHold.setLayout(new FlowLayout(FlowLayout.LEFT));
+        leftHold.setOpaque(false);
+        add(leftHold, BorderLayout.WEST);
+
         ActionLabel add = new ActionLabel(getImage("/controls/Add.png"), "Add");
         add.addActionListener(this::runAction);
-        add(add);
+        leftHold.add(add);
 
         ActionLabel remove = new ActionLabel(getImage("/controls/Remove.png"), "Remove");
         remove.addActionListener(this::runAction);
-        add(remove);
+        leftHold.add(remove);
 
-        add(new JLabel("   "));
+        leftHold.add(new JLabel("   "));
 
         ActionLabel up = new ActionLabel(getImage("/controls/Up.png"), "Move Up");
         up.addActionListener(this::runAction);
-        add(up);
+        leftHold.add(up);
 
         ActionLabel down = new ActionLabel(getImage("/controls/Down.png"), "Move Down");
         down.addActionListener(this::runAction);
-        add(down);
+        leftHold.add(down);
+
+        JPanel rightHold = new JPanel();
+        rightHold.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        rightHold.setOpaque(false);
+        add(rightHold, BorderLayout.EAST);
+
+        ActionLabel save = new ActionLabel(getImage("/controls/Save.png"), "Save");
+        save.addActionListener(this::runAction);
+        rightHold.add(save);
     }
 
     @Override
@@ -90,6 +105,10 @@ public class CueControls extends JPanel {
 
     public void setMoveDownAction(Runnable action){
         actions.put("Move Down", action);
+    }
+
+    public void setSaveAction(Runnable action){
+        actions.put("Save", action);
     }
 
     private ImageIcon getImage(String name){

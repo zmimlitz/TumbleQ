@@ -1,9 +1,13 @@
 package com.mimlitz.tumbleQ.gui;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mimlitz.tumbleQ.util.io.MyFileFilter;
+import com.mimlitz.tumbleQ.util.io.SaveFile;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.CancellationException;
 
@@ -75,6 +79,7 @@ public class Form extends JFrame {
         controls.setRemoveAction(listing::deleteSelected);
         controls.setMoveUpAction(listing::moveUpSelected);
         controls.setMoveDownAction(listing::moveDownSelected);
+        controls.setSaveAction(this::save);
         controls.setForeground(Color.BLUE);
         controls.setFont(new Font(controls.getFont().getName(), Font.BOLD, 15));
         controls.setBorder(new LineBorder(Color.DARK_GRAY, 2));
@@ -107,9 +112,40 @@ public class Form extends JFrame {
         content.add(viewPnl, "cell 0 2 2 1");
 
         chooser = new JFileChooser();
-        chooser.setFileFilter(new SoundFilter());
         chooser.setMultiSelectionEnabled(false);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    }
+
+    private void save(){
+        chooser.setFileFilter(new MyFileFilter());
+        if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
+            ObjectMapper mapper = new ObjectMapper();
+            File fout = chooser.getSelectedFile();
+            if (!fout.getName().endsWith(MyFileFilter.getSuffix())){
+                fout = new File(fout.getAbsolutePath() + MyFileFilter.getSuffix());
+            }
+            try {
+                mapper.writeValue(fout, listing.getSaveFile());
+            }
+            catch (IOException e) {
+                //TODO notify
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void load(File fin){
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            chooser.setCurrentDirectory(fin.getParentFile());
+            SaveFile save = mapper.readValue(fin, SaveFile.class);
+            listing.cloneFromListing(save.load());
+            repaint();
+        }
+        catch (IOException e){
+            //TODO notify
+            e.printStackTrace();
+        }
     }
 
     public void showForm(){
@@ -123,6 +159,7 @@ public class Form extends JFrame {
     }
 
     private File getCueFile() throws CancellationException {
+        chooser.setFileFilter(new SoundFilter());
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
             return chooser.getSelectedFile();
         }

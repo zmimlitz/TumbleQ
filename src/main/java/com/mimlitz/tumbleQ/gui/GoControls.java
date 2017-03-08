@@ -38,12 +38,12 @@ public class GoControls extends JPanel {
         go.addActionListener(this::runAction);
         add(go, "cell 1 0 2 1");
 
-        BigButton back = new BigButton("LAST", getImage("/controls/Rewind.png"));
+        BigButton back = new BigButton("LAST", getImage("/controls/Skip Back.png"));
         back.setIconLoc(BigButton.ICON_LEFT);
         back.addActionListener(this::runAction);
         add(back, "cell 0 1 2 1");
 
-        BigButton next = new BigButton("NEXT", getImage("/controls/Fast Forward.png"));
+        BigButton next = new BigButton("NEXT", getImage("/controls/Skip Forward.png"));
         next.setIconLoc(BigButton.ICON_RIGHT);
         next.addActionListener(this::runAction);
         add(next, "cell 2 1 2 1");
