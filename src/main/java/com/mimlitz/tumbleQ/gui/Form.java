@@ -174,8 +174,14 @@ public class Form extends JFrame {
     }
 
     private void exit(){
-        Platform.exit();
-        System.exit(0);
+        if (JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to exit?",
+                "Closing TumbleQ",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.PLAIN_MESSAGE) == JOptionPane.YES_OPTION) {
+            Platform.exit();
+            System.exit(0);
+        }
     }
 
     private File getCueFile() throws CancellationException {

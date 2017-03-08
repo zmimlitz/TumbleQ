@@ -5,6 +5,7 @@ import com.mimlitz.tumbleQ.util.io.SaveFile;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -52,7 +53,7 @@ public class CueListing extends JPanel {
         updateView();
     }
 
-    public MediaPlayer getCurrent(){
+    public SoundClip getCurrent(){
         return cues.get(active).clip;
     }
 
@@ -162,7 +163,7 @@ public class CueListing extends JPanel {
     private class Entry {
         boolean active, selected, valid;
         final String name, link;
-        final MediaPlayer clip;
+        final SoundClip clip;
         final File file;
 
         Entry(File file){
@@ -171,19 +172,13 @@ public class CueListing extends JPanel {
             selected  = false;
             link = "None";
             name = file.getName().substring(0, file.getName().lastIndexOf('.'));
-            Media media = null;
+            clip = new FXClipImpl();
             try {
-                media = new Media(file.toURI().toString());
+                clip.load(file);
                 valid = true;
             }
-            catch (Exception e){
+            catch (IOException e){
                 valid = false;
-            }
-            if (valid){
-                clip = new MediaPlayer(media);
-            }
-            else {
-                clip = null;
             }
         }
 
