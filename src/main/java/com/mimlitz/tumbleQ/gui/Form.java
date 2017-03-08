@@ -17,7 +17,9 @@ import javafx.application.Platform;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
 import javax.swing.border.LineBorder;
@@ -85,7 +87,10 @@ public class Form extends JFrame {
         controls.setBorder(new LineBorder(Color.DARK_GRAY, 2));
         qListPnl.add(controls, BorderLayout.NORTH);
 
-        qListPnl.add(listing, BorderLayout.CENTER);
+        JScrollPane listingScroll = new JScrollPane(listing);
+        listingScroll.setOpaque(false);
+        listingScroll.getViewport().setOpaque(false);
+        qListPnl.add(listingScroll, BorderLayout.CENTER);
 
         JPanel goPnl = new JPanel();
         goPnl.setBackground(Color.BLACK);
@@ -125,10 +130,25 @@ public class Form extends JFrame {
                 fout = new File(fout.getAbsolutePath() + MyFileFilter.getSuffix());
             }
             try {
-                mapper.writeValue(fout, listing.getSaveFile());
+                if (fout.exists()){
+                    int overwrite = JOptionPane.showConfirmDialog(this, "The file already exists do you want to replace it?", "Confirm Save",
+                            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                    if (overwrite == JOptionPane.YES_OPTION){
+                        mapper.writeValue(fout, listing.getSaveFile());
+                    }
+                    else if (overwrite == JOptionPane.NO_OPTION) {
+                        save();
+                    }
+                    else {
+                        //cancel: do not save
+                    }
+                }
+                else {
+                    mapper.writeValue(fout, listing.getSaveFile());
+                }
             }
             catch (IOException e) {
-                //TODO notify
+                JOptionPane.showConfirmDialog(this, e.getMessage(), "Save Failed", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
         }
@@ -143,7 +163,7 @@ public class Form extends JFrame {
             repaint();
         }
         catch (IOException e){
-            //TODO notify
+            JOptionPane.showConfirmDialog(this, e.getMessage(), "Load Failed", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }

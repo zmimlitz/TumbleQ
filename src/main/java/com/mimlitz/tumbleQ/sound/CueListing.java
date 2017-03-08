@@ -153,7 +153,7 @@ public class CueListing extends JPanel {
 
     public void cloneFromListing(CueListing other){
         this.cues = other.cues;
-        active = -1;
+        active = cues.size() > 0 ? 0 : -1;
         selected = -1;
         locked = false;
         updateView();
