@@ -21,6 +21,6 @@ public interface SoundClip {
 
     List<Integer> getBookmarks();
 
-    void setVolume(int vol);
+    void setVolume(double vol);
 
 }

@@ -24,7 +24,7 @@ public class FXClipImpl implements SoundClip {
         try {
             Media media = new Media(file.toURI().toString());
             clip = new MediaPlayer(media);
-            setVolume(70);
+            setVolume(0.5);
         }
         catch (Exception e){
             throw new IOException("Could not read in sound file", e);
@@ -64,8 +64,8 @@ public class FXClipImpl implements SoundClip {
     }
 
     @Override
-    public void setVolume(int vol) {
-        clip.setVolume(vol/100.);
+    public void setVolume(double vol) {
+        clip.setVolume(vol);
     }
 
 }

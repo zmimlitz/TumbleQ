@@ -1,6 +1,7 @@
 package com.mimlitz.tumbleQ.gui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mimlitz.tumbleQ.sound.ClipPlayer;
 import com.mimlitz.tumbleQ.util.io.MyFileFilter;
 import com.mimlitz.tumbleQ.util.io.SaveFile;
 import java.awt.*;
@@ -31,6 +32,8 @@ public class Form extends JFrame {
 
     private JFileChooser chooser;
 
+    private ClipPlayer player;
+
     public static Form getInstance(){
         if (!instance.isPresent()){
             instance = Optional.of(new Form());
@@ -45,6 +48,7 @@ public class Form extends JFrame {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
         catch (Exception e) {}
+        player = new ClipPlayer();
         listing = new CueListing();
 
         setTitle("TumbleQ");
@@ -89,6 +93,7 @@ public class Form extends JFrame {
 
         JScrollPane listingScroll = new JScrollPane(listing);
         listingScroll.setOpaque(false);
+        listingScroll.setBorder(null);
         listingScroll.getViewport().setOpaque(false);
         qListPnl.add(listingScroll, BorderLayout.CENTER);
 
@@ -102,6 +107,7 @@ public class Form extends JFrame {
         goControls.setNextAction(listing::advance);
         goControls.setGoAction(() -> {
             listing.getCurrent().play();
+            player.setCurrent(listing.getCurrent());
             listing.advance();
         });
         goControls.setForeground(Color.BLUE);
@@ -110,7 +116,10 @@ public class Form extends JFrame {
 
         JPanel controlsPnl = new JPanel();
         controlsPnl.setBackground(Color.BLACK);
+        controlsPnl.setLayout(new BorderLayout());
         content.add(controlsPnl, "cell 2 0 1 2");
+
+        controlsPnl.add(player.getVolumeControl(), BorderLayout.CENTER);
 
         JPanel viewPnl = new JPanel();
         viewPnl.setBackground(Color.BLACK);
