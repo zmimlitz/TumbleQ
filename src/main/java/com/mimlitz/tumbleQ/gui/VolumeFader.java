@@ -1,10 +1,16 @@
 package com.mimlitz.tumbleQ.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+
+import javax.swing.ImageIcon;
 import javax.swing.JSlider;
+import javax.swing.plaf.basic.BasicSliderUI;
 
 public class VolumeFader extends JSlider {
+
+    private boolean dragging = false;
 
     public VolumeFader(){
         setOrientation(JSlider.VERTICAL);
@@ -12,11 +18,12 @@ public class VolumeFader extends JSlider {
         setMaximum(10*100);
         setValue(0);
         setBorder(null);
-
         setOpaque(false);
         setSnapToTicks(false);
-        setMajorTickSpacing(1000);
-        setMinorTickSpacing(100);
+
+        FaderUI ui = new FaderUI(this, new ImageIcon(VolumeFader.class.getResource("/Fader Knob.png")));
+        setUI(ui);
+
     }
 
     public double getVolume(){
@@ -47,7 +54,44 @@ public class VolumeFader extends JSlider {
         int range = getMaximum()-getMinimum();
         int height = (int)((inverseVolume(val)-getMinimum())*getHeight()/range);
         g.setColor(Color.LIGHT_GRAY);
-        g.drawLine(getWidth()/2-50, getHeight()-height, getWidth()/2+50, getHeight()-height);
+        g.drawLine(getWidth()/2-35, getHeight()-height, getWidth()/2+35, getHeight()-height);
+    }
+
+    @Override
+    public void setValue(int value){
+        super.setValue(value);
+    }
+
+    @Override
+    public Dimension getPreferredSize(){
+        return new Dimension(100, super.getPreferredSize().height);
+    }
+    
+    private class FaderUI extends BasicSliderUI {
+        
+        private ImageIcon knob;
+        
+        public FaderUI(JSlider slider, ImageIcon knob){
+            super(slider);
+            this.knob = knob;
+        }
+        
+        @Override
+        public void paintThumb(Graphics g){
+            int y = yPositionForValue(getValue());
+            g.drawImage(knob.getImage(), (getWidth()-knob.getIconWidth())/2, y-knob.getIconHeight()/2, null);
+        }
+
+        @Override
+        public int yPositionForValue(int value){
+            return super.yPositionForValue(value);
+        }
+
+        @Override
+        public Dimension getThumbSize(){
+            return new Dimension(knob.getIconWidth(), knob.getIconHeight());
+        }
+        
     }
 
 }

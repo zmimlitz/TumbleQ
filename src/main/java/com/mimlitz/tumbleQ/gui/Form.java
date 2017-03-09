@@ -69,13 +69,13 @@ public class Form extends JFrame {
         setBounds(100, 100, 600, 300);
         JPanel content = new JPanel();
         content.setBackground(Color.DARK_GRAY);
-        content.setLayout(new MigLayout("", "[fill,grow][fill,grow]5[fill,grow]", "[fill,grow][fill,grow]5[fill,grow]"));
+        content.setLayout(new MigLayout("", "[fill,grow][fill,grow]5[fill,grow]5[fill,grow]", "[fill,grow][fill,grow]5[fill,grow]"));
         setContentPane(content);
 
         JPanel qListPnl = new JPanel();
         qListPnl.setBackground(Color.BLACK);
         qListPnl.setLayout(new BorderLayout());
-        content.add(qListPnl, "cell 0 0 2 2");
+        content.add(qListPnl, "cell 0 0 3 2");
 
         CueControls controls = new CueControls();
         controls.setAddAction(() -> {
@@ -104,7 +104,7 @@ public class Form extends JFrame {
         JPanel goPnl = new JPanel();
         goPnl.setBackground(Color.BLACK);
         goPnl.setLayout(new BorderLayout());
-        content.add(goPnl, "cell 2 2");
+        content.add(goPnl, "cell 2 2 2");
 
         GoControls goControls = new GoControls();
         goControls.setBackAction(listing::rollback);
@@ -117,7 +117,7 @@ public class Form extends JFrame {
         JPanel controlsPnl = new JPanel();
         controlsPnl.setBackground(Color.BLACK);
         controlsPnl.setLayout(new BorderLayout());
-        content.add(controlsPnl, "cell 2 0 1 2");
+        content.add(controlsPnl, "cell 3 0 1 2");
 
         controlsPnl.add(player.getVolumeControl(), BorderLayout.CENTER);
 
