@@ -1,5 +1,6 @@
 package com.mimlitz.tumbleQ.sound;
 
+import com.mimlitz.tumbleQ.gui.ComboBox;
 import com.mimlitz.tumbleQ.gui.Divider;
 import com.mimlitz.tumbleQ.util.io.SaveFile;
 import java.awt.Component;
@@ -18,6 +19,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CueListing extends JPanel {
@@ -28,7 +30,7 @@ public class CueListing extends JPanel {
 
     public CueListing(){
         setOpaque(false);
-        setLayout(new MigLayout("", "0[fill,50]0[fill,grow]0[fill,200]0", ""));
+        setLayout(new MigLayout("", "0[fill,50]0[fill,grow]0[fill,200]0", "fill"));
         cues = new ArrayList<>();
 
         addMouseListener(new MouseAdapter() {
@@ -146,21 +148,17 @@ public class CueListing extends JPanel {
             name.setOpaque(cue.selected);
             name.setName(i + "");
             add(name);
-            JComboBox<String> link = new JComboBox<>(new String[]{"None", "After Last"});
-            link.setBackground(Color.BLACK);
+            ComboBox link = new ComboBox("None", "After Last");
             link.setOpaque(false);
-            link.setForeground(cue.valid ? Color.BLACK : Color.RED);
+            link.setForeground(cue.valid ? Color.WHITE : Color.RED);
             link.setSelectedItem(cue.link);
-            link.setEditable(false);
             for (Component comp : link.getComponents()){
                 comp.setBackground(Color.BLACK);
             }
-            link.getEditor().getEditorComponent().setBackground(Color.BLACK);
             link.setName(i+"");
             final int index = i;
             link.addActionListener((a) -> {
-                cues.get(index).link = (String)link.getSelectedItem();
-                System.out.println(cues.get(index).name + ":" + cues.get(index).link);
+                cues.get(index).link = link.getSelectedItem();
             });
             add(link, "wrap");
 

@@ -11,6 +11,7 @@ public class VolumeFader extends JSlider {
         setMinimum(-20*100);
         setMaximum(10*100);
         setValue(0);
+        setBorder(null);
 
         setOpaque(false);
         setSnapToTicks(false);

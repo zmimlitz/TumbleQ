@@ -50,11 +50,6 @@ public class Form extends JFrame {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
         catch (Exception e) {}
-        UIManager.put("ComboBox.background", new ColorUIResource(Color.DARK_GRAY));
-        UIManager.put("ComboBox.foreground", new ColorUIResource(Color.WHITE));
-        UIManager.put("JTextField.background", new ColorUIResource(Color.BLACK));
-        UIManager.put("ComboBox.selectionBackground", new ColorUIResource(Color.BLUE));
-        UIManager.put("ComboBox.selectionForeground", new ColorUIResource(Color.WHITE));
         player = new ClipPlayer();
         listing = new CueListing();
 
@@ -95,10 +90,6 @@ public class Form extends JFrame {
         controls.setMoveUpAction(listing::moveUpSelected);
         controls.setMoveDownAction(listing::moveDownSelected);
         controls.setSaveAction(this::save);
-        controls.setStopAction(() -> {
-            listing.getCurrent().pause();
-            listing.getCurrent().setToTime(0);
-        });
         controls.setForeground(Color.BLUE);
         controls.setFont(new Font(controls.getFont().getName(), Font.BOLD, 15));
         controls.setBorder(new LineBorder(Color.DARK_GRAY, 2));

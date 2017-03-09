@@ -101,7 +101,6 @@ class BigButton extends JPanel {
         listeners = new HashSet<>();
         this.text = new JLabel();
         this.icon = new ImageDisplay();
-        icon.setSquare(true);
         setLayout(new MigLayout("", "[fill,grow,right,50%][fill,grow,left,50%]", "[fill,grow,align 50%]"));
         setIconLoc(ICON_RIGHT);
         setText(text);

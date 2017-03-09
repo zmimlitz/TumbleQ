@@ -2,6 +2,7 @@ package com.mimlitz.tumbleQ.gui;
 
 import java.awt.AlphaComposite;
 import java.awt.Composite;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
@@ -16,7 +17,6 @@ import javax.swing.JLabel;
 class ImageDisplay extends JLabel{
 
     private Optional<Icon> image;
-    private boolean square = false;
 
     ImageDisplay(){
         image = Optional.empty();
@@ -37,16 +37,8 @@ class ImageDisplay extends JLabel{
 
     protected void updateImage(){
         if (image.isPresent() && getWidth()> 5 && getHeight() > 5){
-            int width = this.getWidth(), height = this.getHeight();
-            if (square){
-                if (width < height){
-                    height = width;
-                }
-                if (height < width){
-                    width = height;
-                }
-            }
-            super.setIcon(resize(image.get(), width, height));
+            Dimension imageSize = getPreferredSize();
+            super.setIcon(resize(image.get(), imageSize.width, imageSize.height));
         }
     }
 
@@ -77,9 +69,17 @@ class ImageDisplay extends JLabel{
         updateImage();
     }
 
-    public void setSquare(boolean square){
-        this.square = square;
-        repaint();
+    @Override
+    public Dimension getPreferredSize(){
+        if (!image.isPresent()){
+            return new Dimension(0, 0);
+        }
+        if (getHeight() < getWidth()){
+            return new Dimension(getHeight()*image.get().getIconWidth()/image.get().getIconHeight(), getHeight());
+        }
+        else {
+            return new Dimension(getWidth(), getWidth()*image.get().getIconHeight()/image.get().getIconWidth());
+        }
     }
 
 }
