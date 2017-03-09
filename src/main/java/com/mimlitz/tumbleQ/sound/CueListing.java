@@ -3,9 +3,12 @@ package com.mimlitz.tumbleQ.sound;
 import com.mimlitz.tumbleQ.gui.Divider;
 import com.mimlitz.tumbleQ.util.io.SaveFile;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -17,9 +20,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-
 public class CueListing extends JPanel {
 
     private List<Entry> cues;
@@ -28,7 +28,7 @@ public class CueListing extends JPanel {
 
     public CueListing(){
         setOpaque(false);
-        setLayout(new MigLayout("", "0[fill,50]0[fill,grow]0", ""));
+        setLayout(new MigLayout("", "0[fill,50]0[fill,grow]0[fill,200]0", ""));
         cues = new ArrayList<>();
 
         addMouseListener(new MouseAdapter() {
@@ -45,7 +45,13 @@ public class CueListing extends JPanel {
     }
 
     public void addCue(File file){
-        cues.add(new Entry(file));
+        addCue(file, "None");
+    }
+
+    public void addCue(File file, String link){
+        Entry cue = new Entry(file);
+        cue.link = link;
+        cues.add(cue);
         if (cues.size() == 1){
             cues.get(0).active = true;
             active = 0;
@@ -69,6 +75,10 @@ public class CueListing extends JPanel {
         active--;
         cues.get(active).active = true;
         updateView();
+    }
+
+    public boolean currentIsLinked(){
+        return !cues.get(active).link.equals("None");
     }
 
     public void select(int i){
@@ -133,7 +143,24 @@ public class CueListing extends JPanel {
             name.setBackground(Color.BLUE);
             name.setOpaque(cue.selected);
             name.setName(i + "");
-            add(name, "wrap");
+            add(name);
+            JComboBox<String> link = new JComboBox<>(new String[]{"None", "After Last"});
+            link.setBackground(Color.BLACK);
+            link.setOpaque(false);
+            link.setForeground(cue.valid ? Color.BLACK : Color.RED);
+            link.setSelectedItem(cue.link);
+            link.setEditable(false);
+            for (Component comp : link.getComponents()){
+                comp.setBackground(Color.BLACK);
+            }
+            link.getEditor().getEditorComponent().setBackground(Color.BLACK);
+            link.setName(i+"");
+            final int index = i;
+            link.addActionListener((a) -> {
+                cues.get(index).link = (String)link.getSelectedItem();
+                System.out.println(cues.get(index).name + ":" + cues.get(index).link);
+            });
+            add(link, "wrap");
 
             add(new Divider(), "span");
         }
@@ -162,9 +189,10 @@ public class CueListing extends JPanel {
 
     private class Entry {
         boolean active, selected, valid;
-        final String name, link;
+        final String name;
         final SoundClip clip;
         final File file;
+        String link;
 
         Entry(File file){
             this.file = file;
@@ -173,6 +201,7 @@ public class CueListing extends JPanel {
             link = "None";
             name = file.getName().substring(0, file.getName().lastIndexOf('.'));
             clip = new FXClipImpl();
+            clip.setName(name);
             try {
                 clip.load(file);
                 valid = true;

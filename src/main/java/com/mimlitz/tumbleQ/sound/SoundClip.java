@@ -2,10 +2,11 @@ package com.mimlitz.tumbleQ.sound;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.IllegalFormatException;
 import java.util.List;
 
 public interface SoundClip {
+
+    void setName(String name);
 
     void load(File fin) throws IOException;
 
@@ -16,6 +17,10 @@ public interface SoundClip {
     void setToTime(int sec);
 
     int getTime();
+
+    int getLength();
+
+    void setAfterAction(Runnable after);
 
     void addBookmark(int sec);
 

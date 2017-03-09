@@ -15,11 +15,19 @@ public class ClipPlayer {
 
     public void setCurrent(SoundClip clip){
         if (this.clip != null){
-            this.clip.pause();
             this.clip.setToTime(0);
+            this.clip.pause();
         }
         this.clip = clip;
         volumeCtrl.updateClip(this.clip);
+    }
+
+    public void setCurrent(SoundClip clip, Runnable after){
+        setCurrent(clip);
+        clip.setAfterAction(() -> {
+            after.run();
+            clip.setAfterAction(null);
+        });
     }
 
     public VolumeControl getVolumeControl(){

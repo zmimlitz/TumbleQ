@@ -2,6 +2,7 @@ package com.mimlitz.tumbleQ.gui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mimlitz.tumbleQ.sound.ClipPlayer;
+import com.mimlitz.tumbleQ.sound.SoundClip;
 import com.mimlitz.tumbleQ.util.io.MyFileFilter;
 import com.mimlitz.tumbleQ.util.io.SaveFile;
 import java.awt.*;
@@ -24,6 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
 import javax.swing.border.LineBorder;
+import javax.swing.plaf.ColorUIResource;
 import net.miginfocom.swing.MigLayout;
 
 public class Form extends JFrame {
@@ -48,6 +50,11 @@ public class Form extends JFrame {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
         catch (Exception e) {}
+        UIManager.put("ComboBox.background", new ColorUIResource(Color.DARK_GRAY));
+        UIManager.put("ComboBox.foreground", new ColorUIResource(Color.WHITE));
+        UIManager.put("JTextField.background", new ColorUIResource(Color.BLACK));
+        UIManager.put("ComboBox.selectionBackground", new ColorUIResource(Color.BLUE));
+        UIManager.put("ComboBox.selectionForeground", new ColorUIResource(Color.WHITE));
         player = new ClipPlayer();
         listing = new CueListing();
 
@@ -105,11 +112,7 @@ public class Form extends JFrame {
         GoControls goControls = new GoControls();
         goControls.setBackAction(listing::rollback);
         goControls.setNextAction(listing::advance);
-        goControls.setGoAction(() -> {
-            listing.getCurrent().play();
-            player.setCurrent(listing.getCurrent());
-            listing.advance();
-        });
+        goControls.setGoAction(this::go);
         goControls.setForeground(Color.BLUE);
         goControls.setFont(new Font(goControls.getName(), Font.BOLD, 15));
         goPnl.add(goControls, BorderLayout.CENTER);
@@ -128,6 +131,18 @@ public class Form extends JFrame {
         chooser = new JFileChooser();
         chooser.setMultiSelectionEnabled(false);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    }
+
+    private void go(){
+        SoundClip clip = listing.getCurrent();
+        clip.play();
+        listing.advance();
+        if (listing.currentIsLinked()){
+            player.setCurrent(clip, this::go);
+        }
+        else {
+            player.setCurrent(clip);
+        }
     }
 
     private void save(){

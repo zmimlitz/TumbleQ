@@ -12,11 +12,17 @@ import javafx.util.Duration;
 
 public class FXClipImpl implements SoundClip {
 
+    private String name = "?";
     private MediaPlayer clip;
     private PriorityQueue<Integer> bookmarks;
 
     public FXClipImpl(){
         bookmarks = new PriorityQueue<>();
+    }
+
+    @Override
+    public void setName(String name){
+        this.name = name;
     }
 
     @Override
@@ -49,6 +55,16 @@ public class FXClipImpl implements SoundClip {
     @Override
     public int getTime() {
         return 0;
+    }
+
+    @Override
+    public int getLength(){
+        return (int)Math.ceil(clip.getMedia().getDuration().toSeconds());
+    }
+
+    @Override
+    public void setAfterAction(Runnable after){
+        clip.setOnEndOfMedia(after);
     }
 
     @Override
