@@ -86,7 +86,9 @@ public class CueListing extends JPanel {
             cues.get(selected).selected = false;
         }
         selected = i;
-        cues.get(selected).selected = true;
+        if (i == -1) {
+            cues.get(selected).selected = true;
+        }
         updateView();
     }
 
@@ -132,14 +134,14 @@ public class CueListing extends JPanel {
         for (int i = 0; i < cues.size(); i++){
             Entry cue = cues.get(i);
             JLabel act = new JLabel(cue.active ? "\u23F5" : " ");
-            act.setForeground(cue.valid ? Color.WHITE : Color.RED);
+            act.setForeground(cue.valid ? cue.clip.isPlaying() ? Color.GREEN : Color.WHITE : Color.RED);
             act.setHorizontalAlignment(SwingConstants.CENTER);
             act.setBackground(Color.BLUE);
             act.setOpaque(cue.selected);
             act.setName(i + "");
             add(act);
             JLabel name = new JLabel(cue.name);
-            name.setForeground(cue.valid ? Color.WHITE : Color.RED);
+            name.setForeground(cue.valid ? cue.clip.isPlaying() ? Color.GREEN : Color.WHITE : Color.RED);
             name.setBackground(Color.BLUE);
             name.setOpaque(cue.selected);
             name.setName(i + "");

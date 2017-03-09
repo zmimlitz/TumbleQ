@@ -70,6 +70,10 @@ public class CueControls extends JPanel {
         rightHold.setOpaque(false);
         add(rightHold, BorderLayout.EAST);
 
+        ActionLabel pause = new ActionLabel(getImage("/controls/Stop.png"), "Stop");
+        pause.addActionListener(this::runAction);
+        rightHold.add(pause);
+
         ActionLabel save = new ActionLabel(getImage("/controls/Save.png"), "Save");
         save.addActionListener(this::runAction);
         rightHold.add(save);
@@ -105,6 +109,10 @@ public class CueControls extends JPanel {
 
     public void setMoveDownAction(Runnable action){
         actions.put("Move Down", action);
+    }
+
+    public void setStopAction(Runnable action){
+        actions.put("Stop", action);
     }
 
     public void setSaveAction(Runnable action){

@@ -28,4 +28,6 @@ public interface SoundClip {
 
     void setVolume(double vol);
 
+    boolean isPlaying();
+
 }

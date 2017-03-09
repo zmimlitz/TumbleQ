@@ -15,6 +15,7 @@ public class FXClipImpl implements SoundClip {
     private String name = "?";
     private MediaPlayer clip;
     private PriorityQueue<Integer> bookmarks;
+    private boolean playing = false;
 
     public FXClipImpl(){
         bookmarks = new PriorityQueue<>();
@@ -40,11 +41,13 @@ public class FXClipImpl implements SoundClip {
     @Override
     public void play() {
         clip.play();
+        playing = true;
     }
 
     @Override
     public void pause() {
         clip.pause();
+        playing = false;
     }
 
     @Override
@@ -82,6 +85,11 @@ public class FXClipImpl implements SoundClip {
     @Override
     public void setVolume(double vol) {
         clip.setVolume(vol);
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return playing;
     }
 
 }

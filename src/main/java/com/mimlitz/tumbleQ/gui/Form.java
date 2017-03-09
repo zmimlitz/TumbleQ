@@ -85,14 +85,20 @@ public class Form extends JFrame {
         CueControls controls = new CueControls();
         controls.setAddAction(() -> {
             try {
-                File file = getCueFile();
-                listing.addCue(file);
+                File[] files = getCueFile();
+                for (File file : files) {
+                    listing.addCue(file);
+                }
             } catch (CancellationException e) {}
         });
         controls.setRemoveAction(listing::deleteSelected);
         controls.setMoveUpAction(listing::moveUpSelected);
         controls.setMoveDownAction(listing::moveDownSelected);
         controls.setSaveAction(this::save);
+        controls.setStopAction(() -> {
+            listing.getCurrent().pause();
+            listing.getCurrent().setToTime(0);
+        });
         controls.setForeground(Color.BLUE);
         controls.setFont(new Font(controls.getFont().getName(), Font.BOLD, 15));
         controls.setBorder(new LineBorder(Color.DARK_GRAY, 2));
@@ -146,6 +152,7 @@ public class Form extends JFrame {
     }
 
     private void save(){
+        chooser.setMultiSelectionEnabled(false);
         chooser.setFileFilter(new MyFileFilter());
         if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
             ObjectMapper mapper = new ObjectMapper();
@@ -208,10 +215,11 @@ public class Form extends JFrame {
         }
     }
 
-    private File getCueFile() throws CancellationException {
+    private File[] getCueFile() throws CancellationException {
         chooser.setFileFilter(new SoundFilter());
+        chooser.setMultiSelectionEnabled(true);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
-            return chooser.getSelectedFile();
+            return chooser.getSelectedFiles();
         }
         else {
             throw new CancellationException("Chooser Canceled");
