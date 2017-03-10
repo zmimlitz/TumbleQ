@@ -8,6 +8,8 @@ public interface SoundClip {
 
     void setName(String name);
 
+    String getName();
+
     void load(File fin) throws IOException;
 
     void play();

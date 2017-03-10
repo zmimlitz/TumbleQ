@@ -16,6 +16,7 @@ public class FXClipImpl implements SoundClip {
     private MediaPlayer clip;
     private PriorityQueue<Integer> bookmarks;
     private boolean playing = false;
+    private int[] audioData;
 
     public FXClipImpl(){
         bookmarks = new PriorityQueue<>();
@@ -24,6 +25,11 @@ public class FXClipImpl implements SoundClip {
     @Override
     public void setName(String name){
         this.name = name;
+    }
+
+    @Override
+    public String getName(){
+        return name;
     }
 
     @Override
@@ -52,12 +58,20 @@ public class FXClipImpl implements SoundClip {
 
     @Override
     public void setToTime(int sec) {
-        clip.seek(new Duration(sec*1000));
+        if (sec < 0){
+            sec = 0;
+        }
+        if (sec > getLength()){
+            clip.seek(clip.getTotalDuration());
+        }
+        else {
+            clip.seek(new Duration(sec * 1000));
+        }
     }
 
     @Override
     public int getTime() {
-        return 0;
+        return (int)Math.round(clip.getCurrentTime().toSeconds());
     }
 
     @Override

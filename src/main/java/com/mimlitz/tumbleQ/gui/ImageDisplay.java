@@ -14,11 +14,11 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-class ImageDisplay extends JLabel{
+public class ImageDisplay extends JLabel{
 
     private Optional<Icon> image;
 
-    ImageDisplay(){
+    public ImageDisplay(){
         image = Optional.empty();
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -28,7 +28,7 @@ class ImageDisplay extends JLabel{
         });
     }
 
-    Icon getImage(){
+    public Icon getImage(){
         if (image.isPresent()){
             return image.get();
         }
@@ -37,7 +37,7 @@ class ImageDisplay extends JLabel{
 
     protected void updateImage(){
         if (image.isPresent() && getWidth()> 5 && getHeight() > 5){
-            Dimension imageSize = getPreferredSize();
+            Dimension imageSize = getImageSize();
             super.setIcon(resize(image.get(), imageSize.width, imageSize.height));
         }
     }
@@ -69,16 +69,34 @@ class ImageDisplay extends JLabel{
         updateImage();
     }
 
-    @Override
-    public Dimension getPreferredSize(){
+   private Dimension getImageSize(){
         if (!image.isPresent()){
             return new Dimension(0, 0);
         }
-        if (getHeight() < getWidth()){
-            return new Dimension(getHeight()*image.get().getIconWidth()/image.get().getIconHeight(), getHeight());
+        else {
+            if (getHeight() < getWidth()) {
+                return new Dimension(getHeight() * image.get().getIconWidth() / image.get().getIconHeight() -1,
+                        getHeight()-1);
+            } else {
+                return new Dimension(getWidth() - 1,
+                        getWidth() * image.get().getIconHeight() / image.get().getIconWidth() - 1);
+            }
+        }
+    }
+
+    @Override
+    public Dimension getPreferredSize(){
+        if (!image.isPresent() || getParent() == null || getParent().getWidth() == 0 || getParent().getHeight() == 0){
+            return new Dimension(0, 0);
         }
         else {
-            return new Dimension(getWidth(), getWidth()*image.get().getIconHeight()/image.get().getIconWidth());
+            if (getParent().getHeight() < getParent().getWidth()) {
+                return new Dimension(getParent().getHeight() * image.get().getIconWidth() / image.get().getIconHeight() -1,
+                        getParent().getHeight()-1);
+            } else {
+                return new Dimension(getParent().getWidth() - 1,
+                        getParent().getWidth() * image.get().getIconHeight() / image.get().getIconWidth() - 1);
+            }
         }
     }
 

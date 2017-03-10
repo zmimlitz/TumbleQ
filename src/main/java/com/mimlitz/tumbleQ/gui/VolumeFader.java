@@ -11,6 +11,7 @@ import javax.swing.plaf.basic.BasicSliderUI;
 public class VolumeFader extends JSlider {
 
     private boolean dragging = false;
+    private FaderUI ui;
 
     public VolumeFader(){
         setOrientation(JSlider.VERTICAL);
@@ -21,7 +22,7 @@ public class VolumeFader extends JSlider {
         setOpaque(false);
         setSnapToTicks(false);
 
-        FaderUI ui = new FaderUI(this, new ImageIcon(VolumeFader.class.getResource("/Fader Knob.png")));
+        ui = new FaderUI(this, new ImageIcon(VolumeFader.class.getResource("/Fader Knob.png")));
         setUI(ui);
 
     }
@@ -40,6 +41,7 @@ public class VolumeFader extends JSlider {
 
     @Override
     public void paintComponent(Graphics g){
+        g.setColor(Color.LIGHT_GRAY);
         drawTick(0.1, g);
         drawTick(0.25, g);
         drawTick(0.4, g);
@@ -51,10 +53,8 @@ public class VolumeFader extends JSlider {
     }
 
     private void drawTick(double val, Graphics g){
-        int range = getMaximum()-getMinimum();
-        int height = (int)((inverseVolume(val)-getMinimum())*getHeight()/range);
-        g.setColor(Color.LIGHT_GRAY);
-        g.drawLine(getWidth()/2-35, getHeight()-height, getWidth()/2+35, getHeight()-height);
+        int height = ui.yPositionForValue((int)inverseVolume(val));
+        g.drawLine(getWidth()/2-35, height, getWidth()/2+35, height);
     }
 
     @Override

@@ -207,6 +207,7 @@ public class CueListing extends JPanel {
                 valid = true;
             }
             catch (IOException e){
+                e.printStackTrace();
                 valid = false;
             }
         }
