@@ -3,6 +3,7 @@ package com.mimlitz.tumbleQ.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JSlider;
@@ -10,7 +11,7 @@ import javax.swing.plaf.basic.BasicSliderUI;
 
 public class VolumeFader extends JSlider {
 
-    private boolean dragging = false;
+    private int push = 25;
     private FaderUI ui;
 
     public VolumeFader(){
@@ -21,6 +22,9 @@ public class VolumeFader extends JSlider {
         setBorder(null);
         setOpaque(false);
         setSnapToTicks(false);
+        for (KeyListener listener : super.getKeyListeners()){
+            super.removeKeyListener(listener);
+        }
 
         ui = new FaderUI(this, new ImageIcon(VolumeFader.class.getResource("/Fader Knob.png")));
         setUI(ui);
@@ -92,6 +96,14 @@ public class VolumeFader extends JSlider {
             return new Dimension(knob.getIconWidth(), knob.getIconHeight());
         }
         
+    }
+
+    public void pushUp(){
+        setValue(getValue()+push);
+    }
+
+    public void pushDown(){
+        setValue(getValue()-push);
     }
 
 }

@@ -88,7 +88,7 @@ public class CueListing extends JPanel {
             cues.get(selected).selected = false;
         }
         selected = i;
-        if (i == -1) {
+        if (i != -1) {
             cues.get(selected).selected = true;
         }
         updateView();
@@ -207,7 +207,6 @@ public class CueListing extends JPanel {
                 valid = true;
             }
             catch (IOException e){
-                e.printStackTrace();
                 valid = false;
             }
         }

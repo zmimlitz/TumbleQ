@@ -172,9 +172,15 @@ class BigButton extends JPanel {
     }
 
     @Override
+    public Dimension getMinimumSize(){
+        Dimension bounds = text.getPreferredSize();
+        return new Dimension(2*bounds.width+10, 4*bounds.height);
+    }
+
+    @Override
     public Dimension getPreferredSize(){
         Dimension bounds = text.getPreferredSize();
-        return new Dimension(2*bounds.width+20, 3*bounds.height);
+        return new Dimension(2*bounds.width+30, 6*bounds.height);
     }
 
 }

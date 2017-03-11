@@ -2,15 +2,22 @@ package com.mimlitz.tumbleQ.gui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mimlitz.tumbleQ.sound.ClipPlayer;
+import com.mimlitz.tumbleQ.sound.PlayControl;
 import com.mimlitz.tumbleQ.sound.SoundClip;
+import com.mimlitz.tumbleQ.sound.VolumeControl;
 import com.mimlitz.tumbleQ.util.io.MyFileFilter;
 import com.mimlitz.tumbleQ.util.io.SaveFile;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CancellationException;
 
 import com.mimlitz.tumbleQ.sound.CueListing;
@@ -25,7 +32,6 @@ import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
 import javax.swing.border.LineBorder;
-import javax.swing.plaf.ColorUIResource;
 import net.miginfocom.swing.MigLayout;
 
 public class Form extends JFrame {
@@ -35,7 +41,7 @@ public class Form extends JFrame {
     private JFileChooser chooser;
 
     private ClipPlayer player;
-    private Optional<SoundClip> activeClip = Optional.empty();
+    private GlobalKeyListener globalKey;
 
     public static Form getInstance(){
         if (!instance.isPresent()){
@@ -53,6 +59,10 @@ public class Form extends JFrame {
         catch (Exception e) {}
         player = new ClipPlayer();
         listing = new CueListing();
+        globalKey = new GlobalKeyListener();
+        KeyboardFocusManager manager = KeyboardFocusManager
+                .getCurrentKeyboardFocusManager();
+        manager.addKeyEventDispatcher(globalKey);
 
         setTitle("TumbleQ");
         setIconImage(new ImageIcon(Form.class.getResource("/TumbleQ.png")).getImage());
@@ -114,6 +124,16 @@ public class Form extends JFrame {
         goControls.setForeground(Color.BLUE);
         goControls.setFont(new Font(goControls.getName(), Font.BOLD, 15));
         goPnl.add(goControls, BorderLayout.CENTER);
+        globalKey.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()){
+                    case KeyEvent.VK_SPACE:
+                        go();
+                        break;
+                }
+            }
+        });
 
         JPanel controlsPnl = new JPanel();
         controlsPnl.setBackground(Color.BLACK);
@@ -121,6 +141,20 @@ public class Form extends JFrame {
         content.add(controlsPnl, "cell 5 0 1 2");
 
         controlsPnl.add(player.getVolumeControl(), BorderLayout.CENTER);
+        globalKey.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                VolumeControl control = player.getVolumeControl();
+                switch (e.getKeyCode()){
+                    case KeyEvent.VK_UP:
+                        control.increaseVolume();;
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        control.decreaseVolume();
+                        break;
+                }
+            }
+        });
 
         JPanel viewPnl = new JPanel();
         viewPnl.setBackground(Color.BLACK);
@@ -128,6 +162,23 @@ public class Form extends JFrame {
         content.add(viewPnl, "cell 0 2 4 1");
 
         viewPnl.add(player.getPlayControl(), BorderLayout.CENTER);
+        globalKey.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                PlayControl control = player.getPlayControl();
+                switch (e.getKeyCode()){
+                    case KeyEvent.VK_ENTER:
+                        control.firePlayPauseAction();
+                        break;
+                    case KeyEvent.VK_PERIOD:
+                        control.fireFastForwardAction();
+                        break;
+                    case KeyEvent.VK_COMMA:
+                        control.fireRewindAction();;
+                        break;
+                }
+            }
+        });
 
         chooser = new JFileChooser();
         chooser.setMultiSelectionEnabled(false);
@@ -144,22 +195,6 @@ public class Form extends JFrame {
         else {
             player.setCurrent(clip);
         }
-
-    }
-
-    private void clipPlayPause(){
-
-    }
-
-    private void clipStop(){
-
-    }
-
-    private void clipRewind(){
-
-    }
-
-    private void clipFastForward(){
 
     }
 
@@ -239,3 +274,35 @@ public class Form extends JFrame {
     }
 
 }
+
+class GlobalKeyListener implements KeyEventDispatcher {
+
+    private Set<KeyListener> listeners;
+
+    GlobalKeyListener(){
+        listeners = new HashSet<>();
+    }
+
+    public boolean dispatchKeyEvent(KeyEvent e) {
+        for (KeyListener listener : listeners){
+            switch (e.getID()){
+                case KeyEvent.KEY_PRESSED:
+                    listener.keyPressed(e);
+                    break;
+                case KeyEvent.KEY_RELEASED:
+                    listener.keyReleased(e);
+                    break;
+                case KeyEvent.KEY_TYPED:
+                    listener.keyTyped(e);
+                    break;
+            }
+        }
+        return false;
+    }
+
+    public void addKeyListener(KeyListener listener){
+        listeners.add(listener);
+    }
+
+}
+
