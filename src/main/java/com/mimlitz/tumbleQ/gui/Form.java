@@ -35,6 +35,7 @@ public class Form extends JFrame {
     private JFileChooser chooser;
 
     private ClipPlayer player;
+    private Optional<SoundClip> activeClip = Optional.empty();
 
     public static Form getInstance(){
         if (!instance.isPresent()){
@@ -143,6 +144,23 @@ public class Form extends JFrame {
         else {
             player.setCurrent(clip);
         }
+
+    }
+
+    private void clipPlayPause(){
+
+    }
+
+    private void clipStop(){
+
+    }
+
+    private void clipRewind(){
+
+    }
+
+    private void clipFastForward(){
+
     }
 
     private void save(){

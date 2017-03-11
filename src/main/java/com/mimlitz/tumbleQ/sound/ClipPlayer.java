@@ -11,7 +11,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -76,8 +78,10 @@ class PlayControl extends JPanel {
     private ClipViewer view;
     private JLabel title;
     private ImageDisplay playPause;
+    private Map<String, Runnable> actions;
 
     PlayControl(){
+        actions = new TreeMap<>();
         setOpaque(false);
         setLayout(new BorderLayout());
 
@@ -172,6 +176,28 @@ class PlayControl extends JPanel {
         this.view.setClip(clip);
         this.title.setText("  " + clip.getName());
         updatePlayPause();
+    }
+
+    public void setPlayPauseAction(Runnable action){
+        actions.put("Play", action);
+    }
+
+    public void setStopAction(Runnable action){
+        actions.put("Stop", action);
+    }
+
+    public void setRewindAction(Runnable action){
+        actions.put("Rewind", action);
+    }
+
+    public void setFastForwardAction(Runnable action){
+        actions.put("Fast Forward", action);
+    }
+
+    private void fireAction(String cmd){
+        if (actions.containsKey(cmd)){
+            actions.get(cmd).run();
+        }
     }
 
     private void updatePlayPause(){
