@@ -36,6 +36,7 @@ import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
 import javax.swing.border.LineBorder;
+import javax.swing.plaf.ScrollBarUI;
 import net.miginfocom.swing.MigLayout;
 
 public class Form extends JFrame {
@@ -142,6 +143,13 @@ public class Form extends JFrame {
         listingScroll.setOpaque(false);
         listingScroll.setBorder(null);
         listingScroll.getViewport().setOpaque(false);
+        listingScroll.getVerticalScrollBar().setUnitIncrement(20);
+        MyScrollUI vScrollUI = new MyScrollUI();
+        vScrollUI.setForeground(Color.GRAY);
+        listingScroll.getVerticalScrollBar().setUI(vScrollUI);
+        MyScrollUI hScrollUI = new MyScrollUI();
+        hScrollUI.setForeground(Color.GRAY);
+        listingScroll.getHorizontalScrollBar().setUI(hScrollUI);
         qListPnl.add(listingScroll, BorderLayout.CENTER);
 
         JPanel goPnl = new JPanel();
