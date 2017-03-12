@@ -95,6 +95,9 @@ public class CueListing extends JPanel {
     }
 
     public void deleteSelected(){
+        if (selected == -1){
+            return;
+        }
         cues.remove(selected);
         if (active > selected){
             active--;
@@ -104,6 +107,9 @@ public class CueListing extends JPanel {
     }
 
     public void moveUpSelected(){
+        if (selected == -1){
+            return;
+        }
         Entry select = cues.get(selected);
         Entry less = cues.get(selected-1);
         cues.set(selected, less);
@@ -118,6 +124,9 @@ public class CueListing extends JPanel {
     }
 
     public void moveDownSelected(){
+        if (selected == -1){
+            return;
+        }
         Entry select = cues.get(selected);
         Entry great = cues.get(selected+1);
         cues.set(selected, great);
@@ -129,6 +138,23 @@ public class CueListing extends JPanel {
             active--;
         }
         select(selected+1);
+    }
+
+    public void swapMedia(File file){
+        if (selected == -1){
+            return;
+        }
+        Entry newEntry = new Entry(file);
+        Entry oldEntry = cues.get(selected);
+        newEntry.link = oldEntry.link;
+        newEntry.active = oldEntry.active;
+        newEntry.selected = oldEntry.selected;
+        cues.set(selected, newEntry);
+        updateView();
+    }
+
+    public boolean hasSelected(){
+        return selected != -1;
     }
 
     private void updateView(){
@@ -149,9 +175,10 @@ public class CueListing extends JPanel {
             name.setName(i + "");
             add(name);
             ComboBox link = new ComboBox("None", "After Last");
-            link.setOpaque(false);
             link.setForeground(cue.valid ? Color.WHITE : Color.RED);
             link.setSelectedItem(cue.link);
+            link.setBackground(Color.BLUE);
+            link.setOpaque(cue.selected);
             for (Component comp : link.getComponents()){
                 comp.setBackground(Color.BLACK);
             }
@@ -164,7 +191,9 @@ public class CueListing extends JPanel {
 
             add(new Divider(), "span");
         }
-        remove(getComponent(getComponentCount()-1));
+        if (getComponentCount() > 1) {
+            remove(getComponent(getComponentCount() - 1));
+        }
         EventQueue.invokeLater(() -> {
             revalidate();
             repaint(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);

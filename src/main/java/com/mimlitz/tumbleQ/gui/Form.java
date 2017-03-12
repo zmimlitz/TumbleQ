@@ -11,6 +11,8 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -26,8 +28,10 @@ import javafx.application.Platform;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
@@ -42,6 +46,8 @@ public class Form extends JFrame {
 
     private ClipPlayer player;
     private GlobalKeyListener globalKey;
+
+    private JPopupMenu optionMenu;
 
     public static Form getInstance(){
         if (!instance.isPresent()){
@@ -83,23 +89,49 @@ public class Form extends JFrame {
         content.setLayout(new MigLayout("", "[fill,grow][fill,grow][fill,grow][fill,grow]5[fill,grow]5[fill,grow]", "[fill,grow][fill,grow]5[fill,grow]"));
         setContentPane(content);
 
+        optionMenu = new JPopupMenu();
+        listing.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                EventQueue.invokeLater(() -> {
+                    if (e.getButton() == MouseEvent.BUTTON3) {
+                        optionMenu.show(listing, e.getX() - 2, e.getY() - 2);
+                    }
+                });
+            }
+        });
+
+        JMenuItem addMenu = new JMenuItem("Add", getImage("/controls/Menu-Add.png"));
+        addMenu.addActionListener((a) -> add());
+        optionMenu.add(addMenu);
+
+        JMenuItem removeMenu = new JMenuItem("Remove", getImage("/controls/Menu-Remove.png"));
+        removeMenu.addActionListener((a) -> listing.deleteSelected());
+        optionMenu.add(removeMenu);
+
+        JMenuItem swapMenu = new JMenuItem("Swap Media", getImage("/controls/Menu-Refresh.png"));
+        swapMenu.addActionListener((a) -> swap());
+        optionMenu.add(swapMenu);
+
+        JMenuItem upMenu = new JMenuItem("Move Up", getImage("/controls/Menu-Up.png"));
+        upMenu.addActionListener((a) -> listing.moveUpSelected());
+        optionMenu.add(upMenu);
+
+        JMenuItem downMenu = new JMenuItem("Move Down", getImage("/controls/Menu-Down.png"));
+        downMenu.addActionListener((a) -> listing.moveDownSelected());
+        optionMenu.add(downMenu);
+
         JPanel qListPnl = new JPanel();
         qListPnl.setBackground(Color.BLACK);
         qListPnl.setLayout(new BorderLayout());
         content.add(qListPnl, "cell 0 0 5 2");
 
         CueControls controls = new CueControls();
-        controls.setAddAction(() -> {
-            try {
-                File[] files = getCueFile();
-                for (File file : files) {
-                    listing.addCue(file);
-                }
-            } catch (CancellationException e) {}
-        });
+        controls.setAddAction(this::add);
         controls.setRemoveAction(listing::deleteSelected);
         controls.setMoveUpAction(listing::moveUpSelected);
         controls.setMoveDownAction(listing::moveDownSelected);
+        controls.setSwapAction(this::swap);
         controls.setSaveAction(this::save);
         controls.setForeground(Color.BLUE);
         controls.setFont(new Font(controls.getFont().getName(), Font.BOLD, 15));
@@ -198,6 +230,24 @@ public class Form extends JFrame {
 
     }
 
+    private void add(){
+        try {
+            File[] files = getCueFile();
+            for (File file : files) {
+                listing.addCue(file);
+            }
+        } catch (CancellationException e) {}
+    }
+
+    private void swap(){
+        if (listing.hasSelected()) {
+            try {
+                File[] newFile = getCueFile();
+                listing.swapMedia(newFile[0]);
+            } catch (CancellationException e) {}
+        }
+    }
+
     private void save(){
         chooser.setMultiSelectionEnabled(false);
         chooser.setFileFilter(new MyFileFilter());
@@ -271,6 +321,10 @@ public class Form extends JFrame {
         else {
             throw new CancellationException("Chooser Canceled");
         }
+    }
+
+    private ImageIcon getImage(String name){
+        return new ImageIcon(CueControls.class.getResource(name));
     }
 
 }

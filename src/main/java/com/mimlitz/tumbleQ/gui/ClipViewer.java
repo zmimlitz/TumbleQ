@@ -44,7 +44,7 @@ public class ClipViewer extends JComponent {
             g.fillRoundRect(5, (getHeight()-track_height)/2, getWidth()-10, track_height, track_height/2, track_height/2);
             g.setColor(getForeground());
             int pos = (getWidth()-slider_width-10)*clip.getTime()/(clip.getLength()-1);
-            g.fillRoundRect(pos, (getHeight()-track_height)/2+1, slider_width, track_height-2, track_height/2, track_height/2);
+            g.fillRoundRect(pos+5, (getHeight()-track_height)/2+1, slider_width, track_height-2, track_height/2, track_height/2);
         }
     }
 

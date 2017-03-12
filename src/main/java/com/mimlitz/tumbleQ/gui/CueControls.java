@@ -55,6 +55,10 @@ public class CueControls extends JPanel {
         remove.addActionListener(this::runAction);
         leftHold.add(remove);
 
+        ActionLabel swap = new ActionLabel(getImage("/controls/Refresh.png"), "Swap Media");
+        swap.addActionListener(this::runAction);
+        leftHold.add(swap);
+
         leftHold.add(new JLabel("   "));
 
         ActionLabel up = new ActionLabel(getImage("/controls/Up.png"), "Move Up");
@@ -109,6 +113,10 @@ public class CueControls extends JPanel {
 
     public void setSaveAction(Runnable action){
         actions.put("Save", action);
+    }
+
+    public void setSwapAction(Runnable action){
+        actions.put("Swap Media", action);
     }
 
     private ImageIcon getImage(String name){
