@@ -26,6 +26,12 @@ public interface SoundClip {
 
     void addBookmark(int sec);
 
+    void removeBookmark(int sec);
+
+    void nextBookmark();
+
+    void lastBookmark();
+
     List<Integer> getBookmarks();
 
     void setVolume(double vol);

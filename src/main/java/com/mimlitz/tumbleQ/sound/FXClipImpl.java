@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javafx.collections.transformation.SortedList;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
@@ -14,12 +18,11 @@ public class FXClipImpl implements SoundClip {
 
     private String name = "?";
     private MediaPlayer clip;
-    private PriorityQueue<Integer> bookmarks;
+    private Set<Integer> bookmarks;
     private boolean playing = false;
-    private int[] audioData;
 
     public FXClipImpl(){
-        bookmarks = new PriorityQueue<>();
+        bookmarks = new TreeSet<>();
     }
 
     @Override
@@ -37,6 +40,9 @@ public class FXClipImpl implements SoundClip {
         try {
             Media media = new Media(file.toURI().toString());
             clip = new MediaPlayer(media);
+            bookmarks = new TreeSet<>();
+            bookmarks.add(0);
+            bookmarks.add(getLength());
             setVolume(0.5);
         }
         catch (Exception e){
@@ -90,9 +96,39 @@ public class FXClipImpl implements SoundClip {
     }
 
     @Override
+    public void removeBookmark(int sec){
+        bookmarks.remove(sec);
+    }
+
+    @Override
+    public void nextBookmark(){
+        int time = getTime();
+        List<Integer> bookmarks = getBookmarks();
+        for (Integer mark : bookmarks){
+            if (mark > time){
+                setToTime(mark);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void lastBookmark(){
+        int time = getTime();
+        List<Integer> bookmarks = getBookmarks();
+        for (int i = bookmarks.size()-1; i >= 0; i--){
+            if (bookmarks.get(i) < time){
+                setToTime(bookmarks.get(i));
+                return;
+            }
+        }
+    }
+
+    @Override
     public List<Integer> getBookmarks() {
         List<Integer> out = new ArrayList<>();
         out.addAll(bookmarks);
+        Collections.sort(out);
         return Collections.unmodifiableList(out);
     }
 

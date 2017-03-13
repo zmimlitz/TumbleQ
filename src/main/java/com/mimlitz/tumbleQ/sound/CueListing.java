@@ -20,6 +20,7 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CueListing extends JPanel {
@@ -50,9 +51,16 @@ public class CueListing extends JPanel {
         addCue(file, "None");
     }
 
-    public void addCue(File file, String link){
+    public void addCue(File file, String link) {
+        addCue(file, link, Collections.emptyList());
+    }
+
+    public void addCue(File file, String link, List<Integer> bookmarks){
         Entry cue = new Entry(file);
         cue.link = link;
+        for (Integer mark : bookmarks){
+            cue.clip.addBookmark(mark);
+        }
         cues.add(cue);
         if (cues.size() == 1){
             cues.get(0).active = true;
@@ -62,19 +70,24 @@ public class CueListing extends JPanel {
     }
 
     public SoundClip getCurrent(){
-        return cues.get(active).clip;
+        try {
+            return cues.get(active).clip;
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            return null;
+        }
     }
 
     public void advance(){
         cues.get(active).active = false;
-        active++;
+        active = (active+1) % cues.size();
         cues.get(active).active = true;
         updateView();
     }
 
     public void rollback(){
         cues.get(active).active = false;
-        active--;
+        active = (active-1+cues.size()) % cues.size();
         cues.get(active).active = true;
         updateView();
     }
@@ -157,7 +170,7 @@ public class CueListing extends JPanel {
         return selected != -1;
     }
 
-    private void updateView(){
+    public void updateView(){
         removeAll();
         for (int i = 0; i < cues.size(); i++){
             Entry cue = cues.get(i);
@@ -203,7 +216,7 @@ public class CueListing extends JPanel {
     public SaveFile getSaveFile(){
         SaveFile.Builder builder = SaveFile.builder();
         for (Entry cue : cues){
-            builder.addEntry(cue.file, cue.link);
+            builder.addEntry(cue.file, cue.link, cue.clip.getBookmarks());
         }
         return builder.build();
     }

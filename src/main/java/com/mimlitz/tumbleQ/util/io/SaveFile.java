@@ -27,7 +27,7 @@ public class SaveFile {
     public CueListing load(){
         CueListing listing = new CueListing();
         for (SaveEntry entry : entries){
-            listing.addCue(new File(entry.file), entry.link);
+            listing.addCue(new File(entry.file), entry.link, entry.bookmarks);
 
         }
         return listing;
@@ -41,8 +41,8 @@ public class SaveFile {
             entries = new ArrayList<>();
         }
 
-        public Builder addEntry(File f, String link){
-            entries.add(new SaveEntry(f.getAbsolutePath(), link));
+        public Builder addEntry(File f, String link, List<Integer> bookmarks){
+            entries.add(new SaveEntry(f.getAbsolutePath(), link, bookmarks));
             return this;
         }
 
@@ -57,11 +57,15 @@ public class SaveFile {
 class SaveEntry {
 
     public final String file, link;
+    public final List<Integer> bookmarks;
 
     @JsonCreator
-    public SaveEntry(@JsonProperty("file") String file, @JsonProperty("link") String link){
+    public SaveEntry(@JsonProperty("file") String file,
+                     @JsonProperty("link") String link,
+                     @JsonProperty("bookmarks") List<Integer> bookmarks){
         this.file = file;
         this.link = link;
+        this.bookmarks = Collections.unmodifiableList(bookmarks);
     }
 
 }

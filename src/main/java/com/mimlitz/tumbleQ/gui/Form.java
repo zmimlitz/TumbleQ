@@ -36,7 +36,6 @@ import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
 import javax.swing.border.LineBorder;
-import javax.swing.plaf.ScrollBarUI;
 import net.miginfocom.swing.MigLayout;
 
 public class Form extends JFrame {
@@ -211,10 +210,10 @@ public class Form extends JFrame {
                         control.firePlayPauseAction();
                         break;
                     case KeyEvent.VK_PERIOD:
-                        control.fireFastForwardAction();
+                        control.fireNextBookmarkAction();
                         break;
                     case KeyEvent.VK_COMMA:
-                        control.fireRewindAction();;
+                        control.fireLastBookmarkAction();
                         break;
                 }
             }
@@ -227,6 +226,9 @@ public class Form extends JFrame {
 
     private void go(){
         SoundClip clip = listing.getCurrent();
+        if (clip == null){
+            return;
+        }
         clip.play();
         listing.advance();
         if (listing.currentIsLinked()){
@@ -235,7 +237,7 @@ public class Form extends JFrame {
         else {
             player.setCurrent(clip);
         }
-
+        listing.updateView();
     }
 
     private void add(){
