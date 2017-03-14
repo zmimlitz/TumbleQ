@@ -152,12 +152,28 @@ public class FXClipImpl implements SoundClip {
 
     @Override
     public void setVolume(double vol) {
+        if (vol > 1){
+            vol = 1;
+        }
+        if (vol < 0){
+            vol = 0;
+        }
         clip.setVolume(vol);
+    }
+
+    @Override
+    public double getVolume(){
+        return clip.getVolume();
     }
 
     @Override
     public boolean isPlaying() {
         return playing;
+    }
+
+    @Override
+    public void end(){
+        clip.seek(clip.getTotalDuration());
     }
 
 }

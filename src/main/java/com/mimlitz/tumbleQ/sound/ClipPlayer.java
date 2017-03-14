@@ -42,7 +42,9 @@ public class ClipPlayer {
     public void setCurrent(SoundClip clip){
         if (this.clip != null){
             this.clip.setToTime(0);
-            this.clip.pause();
+            if (clip != this.clip) {
+                this.clip.pause();
+            }
         }
         this.clip = clip;
         volumeCtrl.updateClip(this.clip);

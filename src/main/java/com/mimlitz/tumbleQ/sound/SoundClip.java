@@ -54,6 +54,10 @@ public interface SoundClip {
 
     void setVolume(double vol);
 
+    double getVolume();
+
     boolean isPlaying();
+
+    void end();
 
 }

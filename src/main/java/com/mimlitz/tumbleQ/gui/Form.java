@@ -44,6 +44,7 @@ import java.util.concurrent.CancellationException;
 import com.mimlitz.tumbleQ.sound.CueListing;
 import com.mimlitz.tumbleQ.util.io.SoundFilter;
 import javafx.application.Platform;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -182,6 +183,7 @@ public class Form extends JFrame {
         goControls.setBackAction(listing::rollback);
         goControls.setNextAction(listing::advance);
         goControls.setGoAction(this::go);
+        goControls.setFadeAction(player.getPlayControl()::fireFadeAction);
         goControls.setForeground(Color.BLUE);
         goControls.setFont(new Font(goControls.getName(), Font.BOLD, 15));
         goPnl.add(goControls, BorderLayout.CENTER);
@@ -236,6 +238,9 @@ public class Form extends JFrame {
                         break;
                     case KeyEvent.VK_COMMA:
                         control.fireLastBookmarkAction();
+                        break;
+                    case KeyEvent.VK_BACK_SPACE:
+                        control.fireFadeAction();
                         break;
                 }
             }
@@ -333,7 +338,12 @@ public class Form extends JFrame {
             repaint();
         }
         catch (IOException e){
-            JOptionPane.showConfirmDialog(this, e.getMessage(), "Load Failed", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showConfirmDialog(
+                    this,
+                    e.getMessage(),
+                    "Load Failed",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }

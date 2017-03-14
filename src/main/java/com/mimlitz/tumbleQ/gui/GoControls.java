@@ -46,7 +46,7 @@ public class GoControls extends JPanel {
     public GoControls(){
         actions = new TreeMap<>();
         setOpaque(false);
-        setLayout(new MigLayout("", "10[grow,fill][grow,fill][grow,fill][grow,fill]10", "10[grow,fill]10[grow,fill]10"));
+        setLayout(new MigLayout("", "10[grow,fill,50%]10[grow,fill,50%]10", "10[grow,fill,50%]10[grow,fill,50%]10"));
         initialize();
     }
 
@@ -54,17 +54,22 @@ public class GoControls extends JPanel {
         BigButton go = new BigButton("GO", getImage("/controls/Play.png"));
         go.setIconLoc(BigButton.ICON_RIGHT);
         go.addActionListener(this::runAction);
-        add(go, "cell 1 0 2 1");
+        add(go, "cell 1 0");
 
         BigButton back = new BigButton("LAST", getImage("/controls/Skip Back.png"));
         back.setIconLoc(BigButton.ICON_LEFT);
         back.addActionListener(this::runAction);
-        add(back, "cell 0 1 2 1");
+        add(back, "cell 0 1");
 
         BigButton next = new BigButton("NEXT", getImage("/controls/Skip Forward.png"));
         next.setIconLoc(BigButton.ICON_RIGHT);
         next.addActionListener(this::runAction);
-        add(next, "cell 2 1 2 1");
+        add(next, "cell 1 1");
+
+        BigButton fade = new BigButton("FADE", getImage("/controls/Volume_Mute.png"));
+        fade.setIconLoc(BigButton.ICON_LEFT);
+        fade.addActionListener(this::runAction);
+        add(fade, "cell 0 0");
     }
 
     public void setGoAction(Runnable action){
@@ -77,6 +82,10 @@ public class GoControls extends JPanel {
 
     public void setNextAction(Runnable action){
         actions.put("NEXT", action);
+    }
+
+    public void setFadeAction(Runnable action){
+        actions.put("FADE", action);
     }
 
     private ImageIcon getImage(String name){

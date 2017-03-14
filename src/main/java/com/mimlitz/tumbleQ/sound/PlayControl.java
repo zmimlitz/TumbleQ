@@ -45,6 +45,8 @@ public class PlayControl extends JPanel {
     private ImageDisplay bookmark;
     private Map<String, Runnable> actions;
 
+    private Timer fadeTimer;
+
     PlayControl(){
         actions = new TreeMap<>();
         setOpaque(false);
@@ -208,6 +210,11 @@ public class PlayControl extends JPanel {
                 clip.nextBookmark();
             }
         });
+        actions.put("Fade", () -> {
+            if (clip != null){
+                fade();
+            }
+        });
 
         new Timer(200, (a) -> {
             updatePlayPause();
@@ -249,9 +256,31 @@ public class PlayControl extends JPanel {
         fireAction("Bookmark");
     }
 
+    public void fireFadeAction(){
+        fireAction("Fade");
+    }
+
     private void fireAction(String cmd){
         if (actions.containsKey(cmd)){
             actions.get(cmd).run();
+        }
+    }
+
+    private void fade(){
+        if (fadeTimer == null || !fadeTimer.isRunning()) {
+            double by = clip.getVolume() / 20.;
+            fadeTimer = new Timer(50, (a) -> doFade(by));
+            fadeTimer.start();
+        }
+    }
+
+    private void doFade(double by){
+        if (clip.getVolume() > 0){
+            clip.setVolume(clip.getVolume()-by);
+        }
+        else {
+            fadeTimer.stop();
+            clip.end();
         }
     }
 
