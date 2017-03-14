@@ -29,6 +29,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -219,7 +220,13 @@ public class CueListing extends JPanel {
         removeAll();
         for (int i = 0; i < cues.size(); i++){
             Entry cue = cues.get(i);
-            JLabel act = new JLabel(cue.active ? "\u23F5" : " ");
+            JLabel act = new JLabel();
+            if (cue.active){
+                act.setIcon(new ImageIcon(Entry.class.getResource("/controls/Active.png")));
+            }
+            else {
+                act.setText("  ");
+            }
             act.setForeground(cue.valid ? cue.clip.isPlaying() ? Color.GREEN : Color.WHITE : Color.RED);
             act.setHorizontalAlignment(SwingConstants.CENTER);
             act.setBackground(Color.BLUE);

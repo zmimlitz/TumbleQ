@@ -18,23 +18,9 @@
 
 package com.mimlitz.tumbleQ.sound;
 
-import com.mimlitz.tumbleQ.gui.ClipViewer;
-import com.mimlitz.tumbleQ.gui.ImageDisplay;
-import com.mimlitz.tumbleQ.gui.VolumeFader;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Map;
 import java.util.Optional;
-import java.util.TreeMap;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 public class ClipPlayer {
 
