@@ -139,7 +139,11 @@ public class CueListing extends JPanel {
     }
 
     public boolean currentIsLinked(){
-        return !cues.get(active).link.equals("None");
+        return cues.get(active).link.equals("After Last");
+    }
+
+    public boolean currentIsFloat(){
+        return cues.get(active).link.equals("Float");
     }
 
     public void select(int i){
@@ -243,7 +247,7 @@ public class CueListing extends JPanel {
             name.setName(i + "");
             name.setFont(act.getFont());
             add(name);
-            ComboBox link = new ComboBox("None", "After Last");
+            ComboBox link = new ComboBox("None", "After Last", "Float");
             link.setForeground(cue.valid ? Color.WHITE : Color.RED);
             link.setSelectedItem(cue.link);
             link.setBackground(Color.BLUE);

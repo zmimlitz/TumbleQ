@@ -252,14 +252,24 @@ public class Form extends JFrame {
             return;
         }
         clip.play();
-        listing.advance();
-        if (listing.currentIsLinked()){
-            player.setCurrent(clip, this::go);
+        if (listing.currentIsFloat()){
+            clip.setAfterAction(() -> {
+                clip.setToTime(0);
+                clip.pause();
+                listing.updateView();
+            });
+            listing.advance();
         }
         else {
-            player.setCurrent(clip);
+            listing.advance();
+            if (listing.currentIsLinked()) {
+                player.setCurrent(clip, this::go);
+            }
+            else {
+                player.setCurrent(clip);
+            }
+            listing.updateView();
         }
-        listing.updateView();
     }
 
     private void add(){
