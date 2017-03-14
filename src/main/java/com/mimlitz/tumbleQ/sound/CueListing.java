@@ -20,8 +20,10 @@ package com.mimlitz.tumbleQ.sound;
 
 import com.mimlitz.tumbleQ.gui.ComboBox;
 import com.mimlitz.tumbleQ.gui.Divider;
+import com.mimlitz.tumbleQ.util.io.DoubleClickListener;
 import com.mimlitz.tumbleQ.util.io.SaveFile;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -52,14 +54,25 @@ public class CueListing extends JPanel {
         setLayout(new MigLayout("", "0[fill,50]0[fill,grow]0[fill,200]0", "fill"));
         cues = new ArrayList<>();
 
-        addMouseListener(new MouseAdapter() {
+        addMouseListener(new DoubleClickListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClickedOnce(MouseEvent e) {
                 try {
                     select(Integer.parseInt(getComponentAt(e.getPoint()).getName()));
                 }
                 catch (NullPointerException | NumberFormatException ex){
                     select(-1);
+                }
+            }
+
+            @Override
+            public void mouseDoubleClicked(MouseEvent e) {
+                int current = active;
+                try {
+                    setActive(Integer.parseInt(getComponentAt(e.getPoint()).getName()));
+                }
+                catch (Exception ex){
+                    setActive(current);
                 }
             }
         });
@@ -108,6 +121,20 @@ public class CueListing extends JPanel {
         active = (active-1+cues.size()) % cues.size();
         cues.get(active).active = true;
         updateView();
+    }
+
+    private void setActive(int index){
+        if (active != -1) {
+            cues.get(active).active = false;
+        }
+        if (index >= 0 && index < cues.size()){
+            cues.get(index).active = true;
+            active = index;
+            updateView();
+        }
+        else {
+            throw new IndexOutOfBoundsException(index + " is out of range for cue size " + cues.size());
+        }
     }
 
     public boolean currentIsLinked(){
@@ -198,12 +225,16 @@ public class CueListing extends JPanel {
             act.setBackground(Color.BLUE);
             act.setOpaque(cue.selected);
             act.setName(i + "");
+            if (cue.active){
+                act.setFont(new Font(act.getFont().getName(), Font.BOLD, act.getFont().getSize()+2));
+            }
             add(act);
             JLabel name = new JLabel(cue.name);
             name.setForeground(cue.valid ? cue.clip.isPlaying() ? Color.GREEN : Color.WHITE : Color.RED);
             name.setBackground(Color.BLUE);
             name.setOpaque(cue.selected);
             name.setName(i + "");
+            name.setFont(act.getFont());
             add(name);
             ComboBox link = new ComboBox("None", "After Last");
             link.setForeground(cue.valid ? Color.WHITE : Color.RED);
@@ -218,6 +249,7 @@ public class CueListing extends JPanel {
             link.addActionListener((a) -> {
                 cues.get(index).link = link.getSelectedItem();
             });
+            link.setFont(act.getFont());
             add(link, "wrap");
 
             add(new Divider(), "span");

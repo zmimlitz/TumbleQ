@@ -23,6 +23,7 @@ import com.mimlitz.tumbleQ.sound.ClipPlayer;
 import com.mimlitz.tumbleQ.sound.PlayControl;
 import com.mimlitz.tumbleQ.sound.SoundClip;
 import com.mimlitz.tumbleQ.sound.VolumeControl;
+import com.mimlitz.tumbleQ.util.io.DoubleClickListener;
 import com.mimlitz.tumbleQ.util.io.MyFileFilter;
 import com.mimlitz.tumbleQ.util.io.SaveFile;
 import java.awt.*;
@@ -108,15 +109,18 @@ public class Form extends JFrame {
         setContentPane(content);
 
         optionMenu = new JPopupMenu();
-        listing.addMouseListener(new MouseAdapter() {
+        listing.addMouseListener(new DoubleClickListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClickedOnce(MouseEvent e) {
                 EventQueue.invokeLater(() -> {
                     if (e.getButton() == MouseEvent.BUTTON3) {
                         optionMenu.show(listing, e.getX() - 2, e.getY() - 2);
                     }
                 });
             }
+
+            @Override
+            public void mouseDoubleClicked(MouseEvent e) {}
         });
 
         JMenuItem addMenu = new JMenuItem("Add", getImage("/controls/Menu-Add.png"));
