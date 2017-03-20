@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.mimlitz.tumbleQ.sound;
+package com.zmimlitz.tumbleQ.sound;
 
-import com.mimlitz.tumbleQ.gui.ClipViewer;
-import com.mimlitz.tumbleQ.gui.ImageDisplay;
+import com.zmimlitz.tumbleQ.gui.ClipViewer;
+import com.zmimlitz.tumbleQ.gui.ImageDisplay;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

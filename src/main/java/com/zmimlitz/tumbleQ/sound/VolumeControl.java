@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.mimlitz.tumbleQ.sound;
+package com.zmimlitz.tumbleQ.sound;
 
-import com.mimlitz.tumbleQ.gui.VolumeFader;
+import com.zmimlitz.tumbleQ.gui.VolumeFader;
 import javax.swing.JPanel;
 
 import java.awt.BorderLayout;

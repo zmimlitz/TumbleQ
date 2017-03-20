@@ -16,18 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.mimlitz.tumbleQ;
+package com.zmimlitz.tumbleQ;
 
-import com.mimlitz.tumbleQ.gui.Form;
-import com.mimlitz.tumbleQ.util.io.MyFileFilter;
+import com.zmimlitz.tumbleQ.gui.Form;
+import com.zmimlitz.tumbleQ.util.io.MyFileFilter;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.util.concurrent.CancellationException;
-import javax.swing.JFrame;
 
 public class Main extends Application {
 

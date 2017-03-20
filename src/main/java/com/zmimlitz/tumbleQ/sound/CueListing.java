@@ -16,21 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.mimlitz.tumbleQ.sound;
+package com.zmimlitz.tumbleQ.sound;
 
-import com.mimlitz.tumbleQ.gui.ComboBox;
-import com.mimlitz.tumbleQ.gui.Divider;
-import com.mimlitz.tumbleQ.util.io.DoubleClickListener;
-import com.mimlitz.tumbleQ.util.io.SaveFile;
+import com.zmimlitz.tumbleQ.gui.ComboBox;
+import com.zmimlitz.tumbleQ.gui.Divider;
+import com.zmimlitz.tumbleQ.util.io.DoubleClickListener;
+import com.zmimlitz.tumbleQ.util.io.SaveFile;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -40,7 +36,6 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.mimlitz.tumbleQ.sound;
+package com.zmimlitz.tumbleQ.sound;
 
 import java.awt.Color;
 import java.awt.Font;

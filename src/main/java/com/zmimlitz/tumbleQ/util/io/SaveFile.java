@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.mimlitz.tumbleQ.util.io;
+package com.zmimlitz.tumbleQ.util.io;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mimlitz.tumbleQ.sound.CueListing;
+import com.zmimlitz.tumbleQ.sound.CueListing;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;

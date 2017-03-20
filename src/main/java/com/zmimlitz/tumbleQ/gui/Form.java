@@ -16,21 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.mimlitz.tumbleQ.gui;
+package com.zmimlitz.tumbleQ.gui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mimlitz.tumbleQ.sound.ClipPlayer;
-import com.mimlitz.tumbleQ.sound.PlayControl;
-import com.mimlitz.tumbleQ.sound.SoundClip;
-import com.mimlitz.tumbleQ.sound.VolumeControl;
-import com.mimlitz.tumbleQ.util.io.DoubleClickListener;
-import com.mimlitz.tumbleQ.util.io.MyFileFilter;
-import com.mimlitz.tumbleQ.util.io.SaveFile;
+import com.zmimlitz.tumbleQ.sound.ClipPlayer;
+import com.zmimlitz.tumbleQ.sound.PlayControl;
+import com.zmimlitz.tumbleQ.sound.SoundClip;
+import com.zmimlitz.tumbleQ.sound.VolumeControl;
+import com.zmimlitz.tumbleQ.util.io.DoubleClickListener;
+import com.zmimlitz.tumbleQ.util.io.MyFileFilter;
+import com.zmimlitz.tumbleQ.util.io.SaveFile;
+import com.zmimlitz.tumbleQ.util.io.SoundFilter;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -41,10 +41,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CancellationException;
 
-import com.mimlitz.tumbleQ.sound.CueListing;
-import com.mimlitz.tumbleQ.util.io.SoundFilter;
+import com.zmimlitz.tumbleQ.sound.CueListing;
 import javafx.application.Platform;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;

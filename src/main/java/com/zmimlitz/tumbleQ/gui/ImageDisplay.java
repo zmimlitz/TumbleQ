@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.mimlitz.tumbleQ.gui;
+package com.zmimlitz.tumbleQ.gui;
 
 import java.awt.AlphaComposite;
 import java.awt.Composite;

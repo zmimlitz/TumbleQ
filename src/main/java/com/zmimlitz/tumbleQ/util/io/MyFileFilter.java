@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.mimlitz.tumbleQ.util.io;
+package com.zmimlitz.tumbleQ.util.io;
 
 import java.io.File;
 
