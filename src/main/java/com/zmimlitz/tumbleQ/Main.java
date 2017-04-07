@@ -21,13 +21,19 @@ package com.zmimlitz.tumbleQ;
 import com.zmimlitz.tumbleQ.gui.Form;
 import com.zmimlitz.tumbleQ.util.io.MyFileFilter;
 
+import java.io.IOException;
+import java.util.TreeSet;
 import javafx.application.Application;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.util.concurrent.CancellationException;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 public class Main extends Application {
 
@@ -62,6 +68,7 @@ public class Main extends Application {
                 load(open);
             } catch (CancellationException e) {}
         }
+        startSpeakerSaver();
     }
 
     private File openFile() throws CancellationException {
@@ -89,6 +96,19 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         GUI.showForm();
+    }
+
+    private void startSpeakerSaver(){
+        try {
+            Media media = new Media(Main.class.getResource("/speaker_saver.mp3").toString());
+            MediaPlayer clip = new MediaPlayer(media);
+            clip.setVolume(0.1);
+            new Timer((int)(1.9*60*1000), (a) -> clip.play()).start();
+        }
+        catch (Exception e){
+            System.err.println("Could not load empty track");
+            e.printStackTrace();
+        }
     }
 
 }
