@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -112,6 +113,13 @@ public class GoControls extends JPanel {
         for (Component comp : getComponents()){
             comp.setFont(font);
         }
+    }
+
+    @Override
+    public Dimension getPreferredSize(){
+        int screenSize = Toolkit.getDefaultToolkit().getScreenSize().width/4;
+        Dimension baseSize = super.getPreferredSize();
+        return new Dimension(screenSize>baseSize.getWidth() ? screenSize : baseSize.width, baseSize.height);
     }
 
 }
@@ -207,7 +215,7 @@ class BigButton extends JPanel {
     @Override
     public Dimension getPreferredSize(){
         Dimension bounds = text.getPreferredSize();
-        return new Dimension(2*bounds.width+30, 4*bounds.height);
+        return new Dimension(2*bounds.width+30, 6*bounds.height);
     }
 
 }

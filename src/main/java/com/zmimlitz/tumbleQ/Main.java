@@ -23,13 +23,18 @@ import com.zmimlitz.tumbleQ.util.io.MyFileFilter;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.util.concurrent.CancellationException;
+import javax.swing.JOptionPane;
 
 public class Main extends Application {
 
+    private static String[] arguments;
+
     public static void main(String[] args){
+        arguments = args;
         launch(args);
     }
 
@@ -37,14 +42,26 @@ public class Main extends Application {
 
     public Main(){
         this.GUI = Form.getInstance();
-        try {
-            File open = openFile();
-            if (!open.exists()){
-                throw new CancellationException("Not a real file");
+        if (arguments.length > 0){
+            String filepath = arguments[0];
+            File file = new File(filepath);
+            if (file.exists() && new MyFileFilter().accept(file)){
+                load(file);
             }
-            load(open);
+            else {
+                JOptionPane.showConfirmDialog(GUI, "Cannot open the file " + file.getAbsolutePath(),
+                        "Failed to Load", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+            }
         }
-        catch (CancellationException e){}
+        else {
+            try {
+                File open = openFile();
+                if (!open.exists()) {
+                    throw new CancellationException("Not a real file");
+                }
+                load(open);
+            } catch (CancellationException e) {}
+        }
     }
 
     private File openFile() throws CancellationException {
