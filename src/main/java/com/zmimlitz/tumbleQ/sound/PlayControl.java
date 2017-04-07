@@ -38,6 +38,9 @@ import java.util.TreeMap;
 
 public class PlayControl extends JPanel {
 
+    private static final int FADE_DURATION = 4000; //ms
+    private static final int FADE_RESOLUTION = 50; //ms
+
     private SoundClip clip;
     private ClipViewer view;
     private JLabel title;
@@ -268,8 +271,8 @@ public class PlayControl extends JPanel {
 
     private void fade(){
         if (fadeTimer == null || !fadeTimer.isRunning()) {
-            double by = clip.getVolume() / 20.;
-            fadeTimer = new Timer(50, (a) -> doFade(by));
+            double by = clip.getVolume() / (FADE_DURATION / FADE_RESOLUTION);
+            fadeTimer = new Timer(FADE_RESOLUTION, (a) -> doFade(by));
             fadeTimer.start();
         }
     }
