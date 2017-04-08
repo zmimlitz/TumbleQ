@@ -104,7 +104,7 @@ public class Form extends JFrame {
         setBounds(100, 100, 600, 300);
         JPanel content = new JPanel();
         content.setBackground(Color.DARK_GRAY);
-        content.setLayout(new MigLayout("", "[fill,grow][fill,grow][fill,grow][fill,grow]5[fill,grow]5[fill,grow]", "[fill,grow][fill,grow]5[fill,grow]"));
+        content.setLayout(new MigLayout("", "[fill,67%]5[fill,13%]5[fill,20%]", "[fill,66%]5[fill,34%]"));
         setContentPane(content);
 
         optionMenu = new JPopupMenu();
@@ -145,7 +145,7 @@ public class Form extends JFrame {
         JPanel qListPnl = new JPanel();
         qListPnl.setBackground(Color.BLACK);
         qListPnl.setLayout(new BorderLayout());
-        content.add(qListPnl, "cell 0 0 5 2");
+        content.add(qListPnl, "cell 0 0 2 1");
 
         CueControls controls = new CueControls();
         controls.setAddAction(this::add);
@@ -154,6 +154,7 @@ public class Form extends JFrame {
         controls.setMoveDownAction(listing::moveDownSelected);
         controls.setSwapAction(this::swap);
         controls.setSaveAction(this::save);
+        controls.setLevelAction(this::setTrackLevel);
         controls.setForeground(Color.BLUE);
         controls.setFont(new Font(controls.getFont().getName(), Font.BOLD, 15));
         controls.setBorder(new LineBorder(Color.DARK_GRAY, 2));
@@ -175,7 +176,7 @@ public class Form extends JFrame {
         JPanel goPnl = new JPanel();
         goPnl.setBackground(Color.BLACK);
         goPnl.setLayout(new BorderLayout());
-        content.add(goPnl, "cell 4 2 2");
+        content.add(goPnl, "cell 1 1 2 1");
 
         GoControls goControls = new GoControls();
         goControls.setBackAction(listing::rollback);
@@ -199,7 +200,7 @@ public class Form extends JFrame {
         JPanel controlsPnl = new JPanel();
         controlsPnl.setBackground(Color.BLACK);
         controlsPnl.setLayout(new BorderLayout());
-        content.add(controlsPnl, "cell 5 0 1 2");
+        content.add(controlsPnl, "cell 2 0");
 
         controlsPnl.add(player.getVolumeControl(), BorderLayout.CENTER);
         globalKey.addKeyListener(new KeyAdapter() {
@@ -220,7 +221,7 @@ public class Form extends JFrame {
         JPanel viewPnl = new JPanel();
         viewPnl.setBackground(Color.BLACK);
         viewPnl.setLayout(new BorderLayout());
-        content.add(viewPnl, "cell 0 2 4 1");
+        content.add(viewPnl, "cell 0 1");
 
         viewPnl.add(player.getPlayControl(), BorderLayout.CENTER);
         globalKey.addKeyListener(new KeyAdapter() {
@@ -254,7 +255,7 @@ public class Form extends JFrame {
         if (clip == null){
             return;
         }
-        clip.play();
+            clip.play();
         if (listing.currentIsFloat()){
             clip.setAfterAction(() -> {
                 clip.setToTime(0);
@@ -271,6 +272,7 @@ public class Form extends JFrame {
             else {
                 player.setCurrent(clip);
             }
+            clip.play();
             listing.updateView();
         }
     }
