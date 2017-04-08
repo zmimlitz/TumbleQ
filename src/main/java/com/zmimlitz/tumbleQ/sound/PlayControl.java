@@ -20,6 +20,7 @@ package com.zmimlitz.tumbleQ.sound;
 
 import com.zmimlitz.tumbleQ.gui.ClipViewer;
 import com.zmimlitz.tumbleQ.gui.ImageDisplay;
+import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -330,6 +331,13 @@ public class PlayControl extends JPanel {
         if (title != null){
             title.setForeground(fore);
         }
+    }
+
+    @Override
+    public Dimension getPreferredSize(){
+        int screenSize = Toolkit.getDefaultToolkit().getScreenSize().width*2/3;
+        Dimension baseSize = super.getPreferredSize();
+        return new Dimension(screenSize>baseSize.getWidth() ? screenSize : baseSize.width, baseSize.height);
     }
 
 }

@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -36,9 +37,11 @@ public class FXClipImpl implements SoundClip {
     private MediaPlayer clip;
     private Set<Integer> bookmarks;
     private boolean playing = false;
+    private Optional<Double> init_level;
 
     public FXClipImpl(){
         bookmarks = new TreeSet<>();
+        init_level = Optional.empty();
     }
 
     @Override
@@ -162,6 +165,21 @@ public class FXClipImpl implements SoundClip {
     @Override
     public double getVolume(){
         return clip.getVolume();
+    }
+
+    @Override
+    public boolean hasInitialLevel(){
+        return init_level.isPresent();
+    }
+
+    @Override
+    public void setInitialLevel(double volume){
+        init_level = Optional.of(volume);
+    }
+
+    @Override
+    public double getInitialLevel(){
+        return init_level.isPresent() ? init_level.get() : getVolume();
     }
 
     @Override

@@ -59,8 +59,8 @@ public class SaveFile {
             entries = new ArrayList<>();
         }
 
-        public Builder addEntry(File f, String link, List<Integer> bookmarks){
-            entries.add(new SaveEntry(f.getAbsolutePath(), link, bookmarks));
+        public Builder addEntry(File f, String link, double volume, List<Integer> bookmarks){
+            entries.add(new SaveEntry(f.getAbsolutePath(), link, volume, bookmarks));
             return this;
         }
 
@@ -76,13 +76,16 @@ class SaveEntry {
 
     public final String file, link;
     public final List<Integer> bookmarks;
+    public final double volume;
 
     @JsonCreator
     public SaveEntry(@JsonProperty("file") String file,
                      @JsonProperty("link") String link,
+                     @JsonProperty("volume") double volume,
                      @JsonProperty("bookmarks") List<Integer> bookmarks){
         this.file = file;
         this.link = link;
+        this.volume = volume;
         this.bookmarks = Collections.unmodifiableList(bookmarks);
     }
 

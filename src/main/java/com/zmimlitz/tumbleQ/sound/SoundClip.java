@@ -56,6 +56,12 @@ public interface SoundClip {
 
     double getVolume();
 
+    boolean hasInitialLevel();
+
+    void setInitialLevel(double volume);
+
+    double getInitialLevel();
+
     boolean isPlaying();
 
     void end();

@@ -211,6 +211,14 @@ public class CueListing extends JPanel {
         updateView();
     }
 
+    public void setSelectedLevel(double volume){
+        if (selected == -1){
+            return;
+        }
+        Entry entry = cues.get(selected);
+        entry.clip.setInitialLevel(volume);
+    }
+
     public boolean hasSelected(){
         return selected != -1;
     }
@@ -272,7 +280,9 @@ public class CueListing extends JPanel {
     public SaveFile getSaveFile(){
         SaveFile.Builder builder = SaveFile.builder();
         for (Entry cue : cues){
-            builder.addEntry(cue.file, cue.link, cue.clip.getBookmarks());
+            builder.addEntry(cue.file, cue.link,
+                    cue.clip.hasInitialLevel() ? cue.clip.getInitialLevel() : -1,
+                    cue.clip.getBookmarks());
         }
         return builder.build();
     }

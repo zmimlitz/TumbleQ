@@ -55,6 +55,10 @@ public class VolumeFader extends JSlider {
         return V/100.;
     }
 
+    public void setVolume(double volume){
+        setValue((int)inverseVolume(volume));
+    }
+
     private double inverseVolume(double vol){
         double V = vol*100;
         double x = (Math.tan((V - 56.75)/43.99) + 0.1756)/0.16667;
@@ -77,11 +81,6 @@ public class VolumeFader extends JSlider {
     private void drawTick(double val, Graphics g){
         int height = ui.yPositionForValue((int)inverseVolume(val));
         g.drawLine(getWidth()/2-35, height, getWidth()/2+35, height);
-    }
-
-    @Override
-    public void setValue(int value){
-        super.setValue(value);
     }
 
     @Override

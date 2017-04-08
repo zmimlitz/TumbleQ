@@ -134,6 +134,10 @@ public class Form extends JFrame {
         swapMenu.addActionListener((a) -> swap());
         optionMenu.add(swapMenu);
 
+        JMenuItem levelMenu = new JMenuItem("Set Level", getImage("/controls/Menu-Levels.png"));
+        levelMenu.addActionListener((a) -> setTrackLevel());
+        optionMenu.add(levelMenu);
+
         JMenuItem upMenu = new JMenuItem("Move Up", getImage("/controls/Menu-Up.png"));
         upMenu.addActionListener((a) -> listing.moveUpSelected());
         optionMenu.add(upMenu);
@@ -255,8 +259,11 @@ public class Form extends JFrame {
         if (clip == null){
             return;
         }
-            clip.play();
         if (listing.currentIsFloat()){
+            if (clip.hasInitialLevel()){
+                clip.setVolume(clip.getInitialLevel());
+            }
+            clip.play();
             clip.setAfterAction(() -> {
                 clip.setToTime(0);
                 clip.pause();
@@ -293,6 +300,10 @@ public class Form extends JFrame {
                 listing.swapMedia(newFile[0]);
             } catch (CancellationException e) {}
         }
+    }
+
+    private void setTrackLevel(){
+        listing.setSelectedLevel(player.getVolumeControl().getVolume());
     }
 
     private void save(){
