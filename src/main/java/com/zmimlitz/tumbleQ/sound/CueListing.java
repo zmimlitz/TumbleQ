@@ -20,7 +20,7 @@ package com.zmimlitz.tumbleQ.sound;
 
 import com.zmimlitz.tumbleQ.gui.ComboBox;
 import com.zmimlitz.tumbleQ.gui.Divider;
-import com.zmimlitz.tumbleQ.util.io.DoubleClickListener;
+import com.zmimlitz.tumbleQ.util.DoubleClickListener;
 import com.zmimlitz.tumbleQ.util.io.SaveFile;
 import java.awt.Component;
 import java.awt.Font;
@@ -79,12 +79,15 @@ public class CueListing extends JPanel {
     }
 
     public void addCue(File file, String link) {
-        addCue(file, link, Collections.emptyList());
+        addCue(file, link, -1, Collections.emptyList());
     }
 
-    public void addCue(File file, String link, List<Integer> bookmarks){
+    public void addCue(File file, String link, double volume, List<Integer> bookmarks){
         Entry cue = new Entry(file);
         cue.link = link;
+        if (volume >= 0){
+            cue.clip.setInitialLevel(volume);
+        }
         for (Integer mark : bookmarks){
             cue.clip.addBookmark(mark);
         }

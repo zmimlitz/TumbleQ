@@ -23,7 +23,7 @@ import com.zmimlitz.tumbleQ.sound.ClipPlayer;
 import com.zmimlitz.tumbleQ.sound.PlayControl;
 import com.zmimlitz.tumbleQ.sound.SoundClip;
 import com.zmimlitz.tumbleQ.sound.VolumeControl;
-import com.zmimlitz.tumbleQ.util.io.DoubleClickListener;
+import com.zmimlitz.tumbleQ.util.DoubleClickListener;
 import com.zmimlitz.tumbleQ.util.io.MyFileFilter;
 import com.zmimlitz.tumbleQ.util.io.SaveFile;
 import com.zmimlitz.tumbleQ.util.io.SoundFilter;

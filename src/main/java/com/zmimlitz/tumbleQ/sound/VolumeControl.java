@@ -44,9 +44,7 @@ public class VolumeControl extends JPanel {
     void updateClip(SoundClip clip){
         this.clip = clip;
         if (clip.hasInitialLevel()){
-            System.out.println("Has perffered: " + clip.getInitialLevel());
             fader.setVolume(clip.getInitialLevel());
-            System.out.println(fader.getVolume());
         }
         clip.setVolume(fader.getVolume());
     }

@@ -45,7 +45,7 @@ public class SaveFile {
     public CueListing load(){
         CueListing listing = new CueListing();
         for (SaveEntry entry : entries){
-            listing.addCue(new File(entry.file), entry.link, entry.bookmarks);
+            listing.addCue(new File(entry.file), entry.link, entry.volume, entry.bookmarks);
 
         }
         return listing;
